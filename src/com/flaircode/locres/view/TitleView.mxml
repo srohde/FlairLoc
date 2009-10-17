@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Canvas xmlns="http://www.adobe.com/2006/mxml"
+	backgroundImage="@Embed(source='/../assets/chrome/titlebg.png', scaleGridTop='2',
+                scaleGridBottom='52', scaleGridLeft='2', scaleGridRight='475')"
+	backgroundSize="100%"
+	backgroundAlpha="1" backgroundColor="#e1e1e1"
+	borderStyle="none"
+	mouseDown="Application.application.nativeWindow.startMove()">
+
+	<Script>
+		<![CDATA[
+			import com.flaircode.locres.event.AppEvent;
+			import com.flaircode.locres.model.AppModel;
+			import mx.core.Application;
+			import org.swizframework.desktop.ISwizUpdateBean;
+			
+			[Bindable][Autowire]
+			public var appModel:AppModel;
+			
+			[Bindable][Autowire]
+			public var swizDesktopBean:ISwizUpdateBean;
+		]]>
+	</Script>
+	
+	<HBox paddingLeft="10" verticalCenter="0" verticalAlign="bottom" horizontalGap="5">
+		
+		<Image source="@Embed(source='/../assets/chrome/logo.png')" />
+		
+		<Label text="{swizDesktopBean.updateInfo.localVersion}"
+			paddingBottom="-6"
+			fontSize="10" color="#878574" />
+	
+	</HBox>
+	
+	<HBox right="5" verticalAlign="bottom" verticalCenter="0">
+	
+		<Label id="languageLabel" text="{appModel.selectedLanguage}"
+			toolTip="{resourceManager.getString('lr', '$LR/Language/ToolTip')}"
+			alpha=".7"
+			mouseOver="languageLabel.alpha = 1"
+			mouseOut="languageLabel.alpha = .7"
+			fontWeight="normal" />
+			
+		<Label text="{resourceManager.getString('lr', '$LR/About')}"
+			click="dispatchEvent(new AppEvent(AppEvent.ABOUT))"
+			alpha=".7"
+			mouseOver="event.currentTarget.alpha = 1"
+			mouseOut="event.currentTarget.alpha = .7"
+			fontWeight="normal" />
+			
+		<Label text="{resourceManager.getString('lr', '$LR/Help')}"
+			click="dispatchEvent(new AppEvent(AppEvent.HELP))"
+			alpha=".7"
+			mouseOver="event.currentTarget.alpha = 1"
+			mouseOut="event.currentTarget.alpha = .7"
+			fontWeight="normal" />
+		
+		<Button styleName="settingsButton" width="22" height="20"
+			click="dispatchEvent(new AppEvent(AppEvent.SHOW_SETTINGS))"
+			toolTip="{resourceManager.getString('lr', '$LR/Settings')}" />
+	
+		<Button styleName="minimizeButton" width="20" height="20"
+			click="Application.application.minimize()" />
+		
+		<Button styleName="{appModel.maximized ? 'restoreButton' : 'maximizeButton'}"
+			width="20" height="20"
+			click="dispatchEvent(new AppEvent(AppEvent.MAXIMIZE))" />
+			
+		<Button styleName="closeButton" width="20" height="20"
+			click="Application.application.close()" />
+		
+	</HBox>
+	
+</Canvas>

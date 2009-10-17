@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WindowedApplication xmlns="http://www.adobe.com/2006/mxml" layout="absolute"
+	preinitialize="pi()"
+	frameRate="12"
+	showFlexChrome="false">
+
+	<Metadata>
+		[ResourceBundle("lr")]
+	</Metadata>
+	<Style source="../style/locres.css" />
+
+
+	<swizframework:SwizConfig xmlns:swizframework="org.swizframework.*"
+		strict="true"
+		mediateBubbledEvents="true"
+		eventPackages="com.flaircode.locres.event"
+		viewPackages="com.flaircode.locres.view"
+		beanLoaders="{[Beans]}"
+	/>		
+
+	<Script>
+		<![CDATA[
+			import mx.logging.LogEventLevel;
+			import com.gskinner.utils.FramerateThrottler;
+			import com.flaircode.locres.Beans;
+			import com.soenkerohde.logging.SOSLoggingTarget;
+			import mx.logging.ILogger;
+			import mx.logging.Log;
+			import org.swizframework.Swiz;
+			
+			private static const logger:ILogger = Log.getLogger("Main");
+			
+			private function pi():void
+			{
+				FramerateThrottler.initialize();
+				focusManager.showFocusIndicator = false;
+				
+				if(CONFIG::logger)
+				{
+					var sos:SOSLoggingTarget = new SOSLoggingTarget();
+					sos.fieldSeparator = "->";
+					sos.includeCategory = true;
+					sos.includeLevel = true;
+					sos.includeTime = true;
+					Log.addTarget(sos);
+					logger.info("enabled logging");
+				}
+				//Swiz.setLogLevel(LogEventLevel.WARN).setStrict(true, "com.flaircode.locres.event").addViewPackage("com.flaircode.locres.view").loadBeans([Beans]);
+			}
+			
+		]]>
+	</Script>
+
+	<view:AppView xmlns:view="com.flaircode.locres.view.*" />
+	
+</WindowedApplication>

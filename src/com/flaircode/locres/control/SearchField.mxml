@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TextInput xmlns:mx="http://www.adobe.com/2006/mxml"
+	focusIn="searchFocusInHandler(event)"
+	focusOut="searchFocusOutHandler(event)"
+	text="{prompt}">
+	
+	<mx:Script>
+		<![CDATA[
+			
+			[Bindable]
+			public var prompt:String = "Search";
+			
+			private function searchFocusInHandler(e:Event):void
+			{
+				if(text == prompt)
+				{
+					text = "";
+				}
+			}
+			
+			private function searchFocusOutHandler(e:Event):void
+			{
+				if(text == "")
+				{
+					text = prompt;
+				}
+			}
+			
+		]]>
+	</mx:Script>
+	
+</mx:TextInput>

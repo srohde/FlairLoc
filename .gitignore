@@ -1,0 +1,5 @@
+bin-debug
+release
+*.mp4
+*.air
+*.xml

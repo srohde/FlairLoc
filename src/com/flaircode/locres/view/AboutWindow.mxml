@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Window xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical" width="400" height="300"
+	title="{resourceManager.getString('lr', '$LR/About/AboutFlairLoc')}"
+	backgroundImage="@Embed(source='/../assets/chrome/appbg.png', scaleGridTop='2',
+            scaleGridBottom='51', scaleGridLeft='2', scaleGridRight='475')"
+		backgroundSize="100%"
+	paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10"
+	showGripper="false" showStatusBar="false">
+	
+	<mx:HBox width="100%" verticalAlign="bottom">
+		<mx:Image source="@Embed(source='/../icons/48_48.png')" width="48" height="48" />
+		<mx:Text>
+			<mx:htmlText>
+				<![CDATA[Copyright © 2009 Sönke Rohde. All Rights Reserved.
+Design: Inara Rohde]]>
+			</mx:htmlText>
+		</mx:Text>
+	</mx:HBox>
+	
+	<mx:Text width="100%">
+		<mx:htmlText>
+			<![CDATA[<b>Web:</b>
+<a href="http://flairloc.com"><u>FlairLoc</u></a>
+<a href="http://soenkerohde.com"><u>Blog</u></a>
+
+<b>Email</b>
+soenke.rohde@gmail.com
+
+<b>Twitter:</b>
+<a href="http://twitter.com/inarator"><u>@inarator</u></a>
+<a href="http://twitter.com/soenkerohde"><u>@soenkerohde</u></a>]]>
+		</mx:htmlText>
+	</mx:Text>
+<!-- <b>Donate:</b>
+If you find this software useful and it saves you time we would appreciate a PayPal donation. -->	
+</mx:Window>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Canvas xmlns="http://www.adobe.com/2006/mxml" xmlns:view="com.flaircode.locres.view.*"
+	backgroundAlpha="1"
+	cacheAsBitmap="true"
+	top="{appModel.maximized ? 0 : 10}" left="{appModel.maximized ? 0 : 10}" right="{appModel.maximized ? 0 : 10}" bottom="{appModel.maximized ? 0 : 10}"
+	backgroundColor="#c1c1c1"
+	filters="{[gf]}"
+	xmlns:locale="com.flaircode.locres.view.locale.*" xmlns:project="com.flaircode.locres.view.project.*">
+	
+		<!--<DropShadowFilter id="ds" 
+			strength=".5"
+			quality="20"
+			distance="10" />-->
+	
+	<GlowFilter id="gf" quality="4" color="#666666"
+		blurX="10" blurY="10"
+		strength="1" />
+	
+	<Script>
+		<![CDATA[
+			import com.flaircode.util.SharedObjectBean;
+			import mx.core.Application;
+			import com.flaircode.locres.LocResConstants;
+			import com.flaircode.locres.model.AppModel;
+
+			[Bindable][Autowire]
+			public var appModel:AppModel;
+			
+			[Autowire]
+			public var soBean:SharedObjectBean;
+			
+		]]>
+	</Script>
+	
+	
+	<view:TitleView width="100%" height="{LocResConstants.TITLE_HEIGHT}"
+		cacheAsBitmap="true"  />
+	
+
+	<project:ContentView width="100%" height="100%"
+		top="{LocResConstants.TITLE_HEIGHT}"
+		bottom="{LocResConstants.FOOTER_HEIGHT}" />
+	
+	<Canvas
+		backgroundImage="@Embed(source='/../assets/chrome/appbg.png', scaleGridTop='2',
+            scaleGridBottom='51', scaleGridLeft='2', scaleGridRight='475')"
+		backgroundSize="100%"
+		width="100%" height="{LocResConstants.FOOTER_HEIGHT}" left="0" bottom="0"
+		backgroundAlpha="1" backgroundColor="#838171">
+		
+		<Label text="{appModel.statusMsg}" left="10" verticalCenter="0"
+			fontSize="10" />
+		
+		<Label text="{resourceManager.getString('lr', '$LR/Copyright')}" verticalCenter="0" right="20"
+			fontWeight="normal"
+			fontSize="9" />
+		
+		<Image source="@Embed(source='/../assets/chrome/resize.png')" right="2" bottom="2"
+			mouseDown="Application.application.nativeWindow.startResize()"
+		/>
+	</Canvas>
+		
+	
+</Canvas>

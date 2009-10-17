@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window xmlns="http://www.adobe.com/2006/mxml"
+	title="{resourceManager.getString('lr', '$LR/Resource/MultilineEditor')}"
+	layout="absolute">
+	
+	<Script>
+		<![CDATA[
+			import com.flaircode.locres.domain.Resource;
+			
+			[Bindable]
+			public var resource:Resource;
+			
+			private function save(e:Event):void
+			{
+				resource.value = ta.text;
+				close();
+			}
+			
+		]]>
+	</Script>
+	
+	<Button label="{resourceManager.getString('lr', '$LR/Common/Save')}" left="5" top="5" click="save(event)" />
+	<TextArea id="ta"
+		wordWrap="false"
+		width="100%" top="35" bottom="0" text="{resource.value}" />
+	
+</Window>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Window xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical" width="240" height="210"
+	title="{resourceManager.getString('lr', '$LR/Update/Title')}" alwaysInFront="true" resizable="false"
+	showStatusBar="false" showGripper="false"
+	paddingLeft="10" paddingTop="10">
+	
+	<mx:Script>
+		<![CDATA[
+			import org.swizframework.desktop.ISwizUpdateBean;
+			
+			[Bindable][Autowire]
+			public var swizUpdateBean:ISwizUpdateBean;
+			
+		]]>
+	</mx:Script>
+	
+	<mx:Form verticalGap="0">
+		<mx:FormItem label="{resourceManager.getString('lr', '$LR/Update/YourVersion')}">
+			<mx:Text text="{swizUpdateBean.updateInfo.localVersion}" />
+		</mx:FormItem>
+		<mx:FormItem label="{resourceManager.getString('lr', '$LR/Update/NewVersion')}">
+			<mx:Text text="{swizUpdateBean.updateInfo.remoteVersion}" />
+		</mx:FormItem>
+	</mx:Form>
+	
+	<mx:Spacer height="10" />
+	
+	<mx:Label text="Progress: {swizUpdateBean.updateInfo.bytesLoaded}/{swizUpdateBean.updateInfo.bytesTotal} Bytes" />
+	<mx:ProgressBar indeterminate="false"
+		label="Remaining: {swizUpdateBean.updateInfo.timeRemaining} sec with {swizUpdateBean.updateInfo.kiloBytePerSecond} KB/s"
+		mode="polled"
+		source="{swizUpdateBean.updateInfo}" />
+			
+	<mx:Spacer height="10" />
+	
+	<mx:HBox width="100%" horizontalAlign="center">
+		<mx:Button label="Update and Restart"
+			enabled="{swizUpdateBean.updateInfo.complete}"
+			click="swizUpdateBean.executeUpdate(false)" />
+	</mx:HBox>
+	
+</mx:Window>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TitleWindow xmlns="http://www.adobe.com/2006/mxml" layout="vertical" width="550" height="400"
+	showCloseButton="true" close="PopUpManager.removePopUp(this)"
+	title="LocRes Project">
+	
+	<Script>
+		<![CDATA[
+			import flash.filesystem.File;
+			import com.flaircode.locres.event.LocaleEvent;
+			import com.flaircode.util.LocaleUtil;
+			import mx.managers.PopUpManager;
+			
+			private var cm:ContextMenu;
+			
+			private function browseProjectDir(e:Event):void
+			{
+				var f:File = new File();
+				f.browseForDirectory("Select Root Locale Directory");
+				f.addEventListener(Event.SELECT, onSelectRootDirectory);
+			}
+			
+			private function onSelectRootDirectory(e:Event):void
+			{
+				var f:File = e.currentTarget as File;
+				projectDir.text = f.nativePath;
+				if(projectName.text == "")
+				{
+					projectName.text = f.parent.name;
+				}
+			}
+			
+			private function onOpenProject(e:Event):void
+			{
+				dispatchEvent(new LocaleEvent(LocaleEvent.BROWSE_LOCALE_DIR));
+			}
+			
+			private function recentProjectLabel(s:String):String
+			{
+				var f:File = new File(s);
+				return f.parent.parent.name;
+			}
+			
+		]]>
+	</Script>
+	
+	
+	<HBox width="100%" height="100%"
+		paddingTop="10" paddingLeft="10" paddingRight="10">
+		
+		<VBox width="50%">
+			<Label styleName="headline"
+				text="Open a Recent Project" />
+			<!--<List id="recentProjects" dataProvider="{recentProjectsDAO.getRecentProjects()}"
+				doubleClickEnabled="true" doubleClick="onRecentProject(event)"
+				width="100" rightClick="onRecentProjectsRight(event)"
+				labelFunction="recentProjectLabel" dataTipField="path" showDataTips="true" />-->
+			<Button label="Open" click="onOpenProject(event)" />
+		</VBox>
+		
+		<VRule height="100%" />
+		
+		<VBox width="50%" paddingLeft="10">
+			<Label styleName="headline"
+				text="New Project" />
+			<Label text="Project Directory" />
+			<HBox>
+				<TextInput id="projectDir" width="160"
+					toolTip="Press Browse to select directory."
+					editable="false" />
+				<Button label="..." click="browseProjectDir(event)"
+					width="50" />
+			</HBox>
+			
+			<Label text="Project Name" />
+			<HBox>
+				<TextInput id="projectName" width="160" />
+				<Button label="New" width="50"
+					enabled="{projectDir.text != '' &amp;&amp; projectName.text != ''}" />
+			</HBox>	
+		</VBox>
+		
+	</HBox>
+	
+	<HRule width="100%" />
+	
+	<HBox width="100%" height="50">
+		<LinkButton label="Help" />
+		<LinkButton label="F.A.Q." />
+	</HBox>
+	
+</TitleWindow>

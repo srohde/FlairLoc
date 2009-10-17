@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window xmlns="http://www.adobe.com/2006/mxml" layout="absolute"
+	title="{resourceManager.getString('lr', '$LR/Preview/Title', [localeModel.selectedLocaleDir.path + '/' + localeModel.selectedResourceBundle + '.properties'])}">
+
+	<Script>
+		<![CDATA[
+			import com.flaircode.locres.model.LocaleModel;
+			
+			[Bindable][Autowire]
+			public var localeModel:LocaleModel;
+			
+			private function saveClipboard(e:Event):void
+			{
+				Clipboard.generalClipboard.clear();
+				Clipboard.generalClipboard.setData(ClipboardFormats.TEXT_FORMAT, localeModel.selectedLocaleDir.toString());
+			}
+			
+		]]>
+	</Script>
+		
+	<HBox left="5" top="5" width="100%">
+		<Button label="{resourceManager.getString('lr', '$LR/Preview/SaveToClipboard')}" click="saveClipboard(event)" />
+	</HBox>
+	
+	<TextArea id="ta"
+		wordWrap="false" editable="false"
+		width="100%" top="35" bottom="0" text="{localeModel.selectedLocaleDir.toString()}" />
+	
+</Window>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Window xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="500" height="220"
+	filters="{[gf]}" alwaysInFront="true"
+	showStatusBar="false" showFlexChrome="false">
+	
+<mx:Script>
+	<![CDATA[
+		import com.flaircode.locres.model.LocaleModel;
+		
+		[Bindable][Autowire]
+		public var localeModel:LocaleModel;
+		
+	]]>
+</mx:Script>
+
+<mx:GlowFilter id="gf" quality="4" color="#666666"
+		blurX="10" blurY="10"
+		strength="1" />
+
+<mx:Canvas width="100%" height="24" left="10" top="10" right="10"
+	backgroundImage="@Embed(source='/../assets/chrome/titlebg.png', scaleGridTop='2',
+                scaleGridBottom='52', scaleGridLeft='2', scaleGridRight='475')"
+	backgroundSize="100%">
+	<mx:Label left="5" top="4" text="{resourceManager.getString('lr', '$LR/Source/CompileAntArgs')}" />
+	
+	<mx:Button styleName="closeButton" width="20" height="20" right="2" top="-2"
+			click="close()" />		
+</mx:Canvas>
+	
+<mx:VBox top="34" left="10" right="10" bottom="10" paddingTop="10" paddingLeft="10" paddingRight="10"
+	backgroundImage="@Embed(source='/../assets/chrome/appbg.png', scaleGridTop='2',
+    scaleGridBottom='51', scaleGridLeft='2', scaleGridRight='475')"
+backgroundSize="100%">
+
+	<!-- TODO dynamic locale dir location -->
+	<mx:Label text="fyi: locale dir location fix '[PROJECT]/locale' in this beta release"
+		fontWeight="normal" />
+	
+	<mx:Label text="{resourceManager.getString('lr', '$LR/Source/FlexCompiler')}" />
+	<mx:HBox width="100%">
+		<mx:TextInput id="compileArgs" width="100%" editable="false"
+			text="{localeModel.compileArgs}" />
+		<mx:Button label="{resourceManager.getString('lr', '$LR/Preview/SaveToClipboard')}"
+			click="Clipboard.generalClipboard.clear();
+				Clipboard.generalClipboard.setData(ClipboardFormats.TEXT_FORMAT, compileArgs.text);" />
+	</mx:HBox>
+	
+	<mx:Label text="{resourceManager.getString('lr', '$LR/Source/Ant')}" />
+	<mx:HBox width="100%">
+		<mx:TextInput id="antArgs" width="100%" editable="false"
+			text="{localeModel.compileArgsAnt}" />
+		<mx:Button label="{resourceManager.getString('lr', '$LR/Preview/SaveToClipboard')}"
+			click="Clipboard.generalClipboard.clear();
+				Clipboard.generalClipboard.setData(ClipboardFormats.TEXT_FORMAT, antArgs.text);" />
+	</mx:HBox>
+	<mx:HBox width="100%">
+		<mx:TextInput id="antPath" width="100%" editable="false"
+			text="{localeModel.compileArgsAntSourcePath}" />
+		<mx:Button label="{resourceManager.getString('lr', '$LR/Preview/SaveToClipboard')}"
+			click="Clipboard.generalClipboard.clear();
+				Clipboard.generalClipboard.setData(ClipboardFormats.TEXT_FORMAT, antPath.text);" />
+	</mx:HBox>
+	
+</mx:VBox>
+</mx:Window>

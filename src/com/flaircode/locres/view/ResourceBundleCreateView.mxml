@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical" width="300" height="110"
+	title="Create ResourceBundle">
+	
+	<mx:Script>
+		<![CDATA[
+			import com.flaircode.locres.event.ResourceBundleEvent;
+			import mx.managers.PopUpManager;
+			
+			private function create():void
+			{
+				if(rbName.text != "" && dispatchEvent(new ResourceBundleEvent(ResourceBundleEvent.ADD, rbName.text)))
+				{
+					PopUpManager.removePopUp(this);
+				}
+			}
+			
+		]]>
+	</mx:Script>
+	
+	<mx:FormItem label="{resourceManager.getString('lr', '$LR/Common/Name')}" width="100%">
+		<mx:TextInput id="rbName" width="100%"
+			enter="create()"
+			creationComplete="rbName.setFocus()" />
+	</mx:FormItem>
+	
+	<mx:HBox width="100%" horizontalAlign="right">
+		<mx:Button label="{resourceManager.getString('lr', '$LR/Common/Cancel')}" click="PopUpManager.removePopUp(this)" />
+		<mx:Button label="{resourceManager.getString('lr', '$LR/Common/Create')}"
+			enabled="{rbName.text != ''}"
+			click="create()" />
+	</mx:HBox>
+	
+</mx:TitleWindow>
