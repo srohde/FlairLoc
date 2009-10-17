@@ -1,0 +1,142 @@
+<project name="FlairLoc" default="package" basedir=".">
+
+	<property file="${basedir}/build-${user.name}.properties" />
+	
+	<!-- required for Flex Ant Tasks -->
+	<property name="FLEX_HOME" value="${flex.sdk.dir}"/>
+	
+	<property name="LOGGING" value="false"/>
+	
+	<property name="AIR_RELEASE" value="release"/>
+	<property name="AIR_BADGE" value="${basedir}/release_badge"/>
+    <property name="APP_DESCRIPTOR" value="${basedir}/src/${APP_NAME}-app.xml"/>
+    <property name="AIR_NAME"       value="${APP_NAME}.air"/>
+	
+    <property name="STORETYPE"     value="pkcs12"/>
+    <property name="KEYSTORE"      value="certificate.p12"/>
+	<property name="KEYSTORE_PASS" value="659867"/>
+	
+	<condition property="ADL" value="${FLEX_HOME}/bin/adl.exe">
+		<os family="windows"/>
+	</condition>
+	<property name="ADL" value="${FLEX_HOME}/bin/adl" />
+	<property name="ADT.JAR" value="${flex.sdk.dir}/lib/adt.jar" />
+
+	<taskdef resource="flexTasks.tasks" classpath="${flex.sdk.dir}/ant/lib/flexTasks.jar" />
+	
+	<target name="adl">
+		<echo>Descriptor ${APP_DESCRIPTOR} with ADL ${ADL}</echo>
+		
+		<!--<copy todir="${basedir}/${AIR_OUTPUT}" overwrite="true">
+			<fileset dir="${basedir}/src">
+				<include name="..." />
+			</fileset>
+		</copy>-->
+		
+		<echo>Run ${ADL} with ${APP_DESCRIPTOR}</echo>
+		<replace file="${APP_DESCRIPTOR}" token="[This value will be overwritten by Flex Builder in the output app.xml]" value="${APP_NAME}.swf" />
+		<exec executable="${ADL}">
+			<arg value="${APP_DESCRIPTOR}"/>
+		</exec>
+	</target>
+		
+	<target name="compile">
+		<mxmlc file="${basedir}/src/${APP_NAME}.mxml"
+			locale="en_US,de_DE,pt_BR"
+			output="${AIR_RELEASE}/${APP_NAME}.swf"
+			actionscript-file-encoding="UTF-8" 
+			link-report="link-report.xml">
+			
+			<define name="CONFIG::logger" value="${LOGGING}"/>
+
+			<load-config filename="${flex.sdk.dir}/frameworks/air-config.xml" />
+
+			<source-path path-element="${basedir}/src" />
+			<source-path path-element="${basedir}/locale/{locale}" />
+			
+			<compiler.library-path dir="${flex.sdk.dir}/frameworks" append="true">
+				<include name="libs" />
+			</compiler.library-path>
+			
+			<!-- Swiz / AS3CoreLib -->
+			<compiler.library-path dir="${basedir}" append="true">
+				<include name="libs" />
+			</compiler.library-path>
+		</mxmlc>
+	</target>
+
+	<target name="preparePackage">
+		<delete dir="${AIR_RELEASE}" />
+		<mkdir dir="${AIR_RELEASE}" />
+		
+		<!-- Copy descriptor -->
+		<copy todir="${AIR_RELEASE}" verbose="true" overwrite="true">
+			<fileset dir="${basedir}/src">
+				<include name="*.xml"/>
+			</fileset>
+		</copy>
+
+		<!-- Copy icons -->
+		<copy todir="${AIR_RELEASE}" verbose="true" overwrite="true">
+			<fileset dir="${basedir}">
+				<include name="icons/**"/>
+			</fileset>
+		</copy>
+	</target>
+	
+	<target name="package" depends="preparePackage, compile">
+		<echo>Package with ${ADT.JAR} -package -storetype ${STORETYPE} -keystore ${KEYSTORE} ${AIR_NAME} ${APP_DESCRIPTOR}</echo>
+		<replace file="${AIR_RELEASE}/${APP_NAME}-app.xml" 
+			     token="[This value will be overwritten by Flex Builder in the output app.xml]" 
+			     value="${APP_NAME}.swf" />
+		<!--<replace file="${AIR_RELEASE}/${APP_NAME}-app.xml" 
+			     token="@VERSION@" 
+			     value="${version}" />-->
+		
+		<java jar="${ADT.JAR}" fork="true" failonerror="true">
+	        <arg value="-package"/>
+			
+	        <arg value="-storetype"/><arg value="${STORETYPE}"/>
+	        <arg value="-keystore" /><arg value="${KEYSTORE}"/>
+			<arg value="-storepass"/><arg value="${KEYSTORE_PASS}"/>
+			
+	        <arg value="${AIR_NAME}"/>
+	        <arg value="${AIR_RELEASE}/${APP_NAME}-app.xml"/>
+			
+			<arg value="-C"/><arg value="${AIR_RELEASE}"/><arg value="${APP_NAME}.swf"/>
+			<arg value="-C"/><arg value="${AIR_RELEASE}"/><arg value="${APP_NAME}-app.xml"/>
+			<arg value="-C"/><arg value="${AIR_RELEASE}"/><arg value="locales.xml"/>
+			<arg value="-C"/><arg value="${AIR_RELEASE}"/><arg value="icons"/>
+		</java>
+	</target>
+	
+	<target name="badge">
+		<delete dir="${AIR_BADGE}" />
+		<mkdir dir="${AIR_BADGE}" />
+		
+		<copy todir="${AIR_BADGE}" overwrite="true">
+			<fileset dir="${basedir}/badge">
+				<include name="index.html"/>
+			</fileset>
+		</copy>
+		
+		<copy todir="${AIR_BADGE}" verbose="true" overwrite="true">
+			<fileset dir="${basedir}/badge">
+				<include name="AC_RunActiveContent.js" />
+				<include name="badge.swf" />
+				<include name="index.html" />
+				<include name="app.png" />
+				<!--<include name="dip_badge_2.png" />
+				<include name="di_air_badge.css" />-->
+			</fileset>
+		</copy>
+		
+		<copy todir="${AIR_BADGE}" verbose="true" overwrite="true">
+			<fileset dir="${basedir}">
+				<include name="${APP_NAME}.air" />
+			</fileset>
+		</copy>
+	</target>
+
+
+</project>

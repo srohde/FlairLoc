@@ -1,0 +1,47 @@
+<locales>
+	<locale code="sq" name="Albanien" />
+	<locale code="ar_AE" name="Arabic" />
+	<locale code="bg" name="Bulgarian" />
+	<locale code="ca" name="Catalan" />
+	<locale code="hr" name="Croation" />
+	<locale code="zh_CN" name="Chinese Simplified" />
+	<locale code="zh_TW" name="Chinese Traditional" />
+	<locale code="cs_CZ" name="Czech" />
+	<locale code="da_DK" name="Danish" />
+	<locale code="nl_NL" name="Dutch" />
+	<locale code="de_DE" name="German" />
+	<locale code="en_US" name="English" />
+	<locale code="et" name="Estonian" />
+	<locale code="tl" name="Filipino" />
+	<locale code="fi_FI" name="Finish" />
+	<locale code="fr_FR" name="French" />
+	<locale code="dl" name="Galician" />
+	<locale code="el_ES" name="Greek" />
+	<locale code="he_IL" name="Hebrew" />
+	<locale code="hi" name="Hindi" />
+	<locale code="hu_HU" name="Hungarian" />
+	<locale code="id" name="Indonesian" />
+	<locale code="it_IT" name="Italian" />
+	<locale code="ja_JP" name="Japanese" />
+	<locale code="ko_KO" name="Korian" />
+	<locale code="lv" name="Latvian" />
+	<locale code="lt" name="Lithuanian" />
+	<locale code="mt" name="Maltese" />
+	<locale code="no_NO" name="Norwegian" />
+	<locale code="fa" name="Persian (Farsi)" />
+	<locale code="pl_PL" name="Polish" />
+	<locale code="pt_BR" name="Portuguese (Brazil)" />
+	<locale code="pt_PT" name="Portuguese (Portugal)" />
+	<locale code="ro" name="Romanian" />
+	<locale code="ru_RU" name="Russian" />
+	<locale code="sr" name="Serbian" />
+	<locale code="sk_SK" name="Slovak" />
+	<locale code="sl" name="Slovenian" />
+	<locale code="es_ES" name="Spanish" />
+	<locale code="sv_SE" name="Swedish" />
+	<locale code="th_TH" name="Thai" />
+	<locale code="tr_TR" name="Turkish" />
+	<locale code="uk" name="Ukrainian" />
+	<locale code="vi" name="Vietnamese" />
+	<!-- Albanian</option><option  value="ar">Arabic</option><option  value="bg">Bulgarian</option><option  value="ca">Catalan</option><option  value="zh-CN">Chinese</option><option  value="hr">Croatian</option><option  value="cs">Czech</option><option  value="da">Danish</option><option  value="nl">Dutch</option><option  value="en">English</option><option  value="et">Estonian</option><option  value="tl">Filipino</option><option  value="fi">Finnish</option><option  value="fr">French</option><option  value="gl">Galician</option><option  value="de">German</option><option  value="el">Greek</option><option  value="iw">Hebrew</option><option  value="hi">Hindi</option><option  value="hu">Hungarian</option><option  value="id">Indonesian</option><option  value="it">Italian</option><option  value="ja">Japanese</option><option  value="ko">Korean</option><option  value="lv">Latvian</option><option  value="lt">Lithuanian</option><option  value="mt">Maltese</option><option  value="no">Norwegian</option><option  value="pl">Polish</option><option  value="pt">Portuguese</option><option  value="ro">Romanian</option><option  value="ru">Russian</option><option  value="sr">Serbian</option><option  value="sk">Slovak</option><option  value="sl">Slovenian</option><option SELECTED value="es">Spanish</option><option  value="sv">Swedish</option><option  value="th">Thai</option><option  value="tr">Turkish</option><option  value="uk">Ukrainian</option><option  value="vi">Vietnamese</option></select> -->
+</locales>
