@@ -3,7 +3,7 @@ package com.flaircode.locres.ctrl {
 	import com.flaircode.locres.domain.SourceKey;
 	import com.flaircode.locres.model.LocaleModel;
 	import com.flaircode.locres.model.SourceModel;
-	import com.flaircode.locres.view.project.LocalePreviewView;
+	import com.flaircode.locres.view.resource.LocalePreviewView;
 	import com.flaircode.locres.view.source.CompileArgsWindow;
 	import com.flaircode.util.FileUtils;
 	import com.flaircode.util.FlaircodeUtils;

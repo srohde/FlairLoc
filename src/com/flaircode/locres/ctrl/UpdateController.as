@@ -1,5 +1,5 @@
 package com.flaircode.locres.ctrl {
-	import com.flaircode.locres.view.UpdateWindow;
+	import com.flaircode.locres.view.window.UpdateWindow;
 	
 	import org.swizframework.Swiz;
 	import org.swizframework.desktop.ISwizUpdateBean;

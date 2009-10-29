@@ -42,7 +42,7 @@
 			  scaleContent="true" maintainAspectRatio="false"
 			  source="@Embed(source='/../assets/chrome/appbg.png',scaleGridTop='2',scaleGridBottom='51',scaleGridLeft='2',scaleGridRight='475')" />
 
-	<project:ContentView width="100%" height="100%" top="{LocResConstants.TITLE_HEIGHT}" bottom="{LocResConstants.FOOTER_HEIGHT}" />
+	<view:ContentView width="100%" height="100%" top="{LocResConstants.TITLE_HEIGHT}" bottom="{LocResConstants.FOOTER_HEIGHT}" />
 
 	<mx:Image left="0" right="0" height="{LocResConstants.FOOTER_HEIGHT}" bottom="0"
 			  scaleContent="true" maintainAspectRatio="false"

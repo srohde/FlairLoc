@@ -83,19 +83,21 @@
 
 	<!-- layer 1: background fill -->
 	<!--- Defines the background color of the skin. -->
-	<s:Rect id="backgroundRect" left="0" right="0" top="0" bottom="0">
+	<s:Rect id="backgroundRect" left="10" right="10" top="10" bottom="10">
 		<s:fill>
-			<!--- @private -->
 			<s:SolidColor color="{getStyle('backgroundColor')}" alpha="{getStyle('backgroundAlpha')}" />
 		</s:fill>
+		<s:filters>
+			<s:GlowFilter color="0x666666" blurX="10" blurY="10" />
+		</s:filters>
 	</s:Rect>
 
-	<mx:Image left="0" right="0" top="0" bottom="0"
+	<mx:Image left="10" right="10" top="10" bottom="10"
 			  scaleContent="true" maintainAspectRatio="false"
 			  source="@Embed(source='/../assets/chrome/appbg.png',scaleGridTop='2',scaleGridBottom='51',scaleGridLeft='2',scaleGridRight='475')" />
 
 	<!-- layer 2: content + status bar -->
-	<s:Group left="0" right="0" top="0" bottom="0"
+	<s:Group left="10" right="10" top="10" bottom="10"
 			 minHeight="24" minWidth="0">
 		<s:layout>
 			<s:VerticalLayout gap="0" />

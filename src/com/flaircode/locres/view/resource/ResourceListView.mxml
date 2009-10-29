@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark" xmlns:mx="library://ns.adobe.com/flex/halo"
+		 xmlns:control="com.flaircode.locres.control.*">
+
+	<fx:Script>
+		<![CDATA[
+			import com.flaircode.locres.model.LocaleModel;
+			import com.flaircode.locres.model.presentation.LocalePresentationModel;
+			import com.flaircode.locres.model.presentation.ResourcePresentationModel;
+			
+			import mx.logging.ILogger;
+			import mx.logging.Log;
+			
+			private static const logger:ILogger = Log.getLogger( "ResourceListView" );
+			
+			[Bindable]
+			[Autowire]
+			public var localeModel:LocaleModel;
+			
+			[Bindable]
+			[Autowire]
+			public var localePModel:LocalePresentationModel;
+			
+			[Bindable]
+			[Autowire]
+			public var model:ResourcePresentationModel;
+		]]>
+	</fx:Script>
+
+	<mx:HBox width="100%"
+			 verticalAlign="bottom">
+		<s:Label text="{resourceManager.getString('lr', '$LR/Resource/Title')}" styleName="headline" />
+		<s:Label fontWeight="normal"
+				 text="{localePModel.localeDirPath + '/' + localeModel.selectedLocaleDir.locale + '/' + localeModel.selectedLocaleDir.selectedResourceBundle + '.properties'}" />
+	</mx:HBox>
+
+	<mx:HRule width="100%" />
+
+	<mx:HBox width="100%">
+		<mx:Button width="22" height="20"
+				   styleName="saveButton" toolTip="{resourceManager.getString('lr', '$LR/Common/Save')}"
+				   enabled="{localeModel.selectedLocaleDir != null &amp;&amp; localeModel.selectedLocaleDir.dirty}" click="model.save()" />
+		<mx:Button width="20" height="20"
+				   styleName="cancelButton" toolTip="{resourceManager.getString('lr', '$LR/Common/Cancel')}"
+				   enabled="{localeModel.selectedLocaleDir != null &amp;&amp; localeModel.selectedLocaleDir.dirty}" click="model.cancel()" />
+		<s:Button label="{resourceManager.getString('lr', '$LR/Common/Preview')}" enabled="{localeModel.selectedLocaleDir != null}"
+				  click="model.preview()" />
+
+		<s:Button id="autoTranslateButton"
+				  click="model.autoTranslate()" label="{resourceManager.getString('lr', '$LR/Common/AutoTranslate')}" />
+
+		<mx:Spacer width="100%" />
+		<control:SearchField prompt="{resourceManager.getString('lr', '$LR/Resource/Search')}" change="model.search(event.currentTarget.text)" />
+		<!--
+			 <Button label="Calc Usage" enabled="{model.sourceDir != null &amp;&amp; model.selectedLocale != null}" />
+		-->
+	</mx:HBox>
+
+	<mx:DataGrid id="resources" width="100%" height="100%"
+				 editable="true" variableRowHeight="true" dataProvider="{localeModel.selectedLocaleDir.resources}">
+		<mx:columns>
+			<mx:DataGridColumn headerText="{resourceManager.getString('lr', '$LR/Common/Name')}" editable="false" dataField="name" />
+			<mx:DataGridColumn headerText="{resourceManager.getString('lr', '$LR/Common/Value')}" editable="true" dataField="value" />
+			<!--<DataGridColumn headerText="Usage" editable="false" width="45" dataField="usage" />-->
+
+			<!--<DataGridColumn sortable="false" editable="false" visible="{resourceListModel.showCompare}"
+				 headerRenderer="com.flaircode.locres.view.itemrenderer.CompareColumnHeaderRenderer"
+				 itemRenderer="com.flaircode.locres.view.itemrenderer.CompareColumnItemRenderer" />-->
+
+			<mx:DataGridColumn width="45"
+							   headerText="#" textAlign="center" editable="false" dataField="comment" showDataTips="true" dataTipField="comment" />
+		</mx:columns>
+	</mx:DataGrid>
+
+</mx:VBox>

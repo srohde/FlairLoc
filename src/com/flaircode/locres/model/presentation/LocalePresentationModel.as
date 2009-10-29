@@ -1,4 +1,6 @@
 package com.flaircode.locres.model.presentation {
+	import com.flaircode.locres.domain.LocaleDir;
+	import com.flaircode.locres.event.LocaleDirEvent;
 	import com.flaircode.locres.event.LocaleEvent;
 	import com.flaircode.locres.event.ResourceBundleEvent;
 	
@@ -61,6 +63,10 @@ package com.flaircode.locres.model.presentation {
 		}
 		
 		public function LocalePresentationModel() {
+		}
+		
+		public function changeLocale( localeDir : LocaleDir ) : void {
+			_dispatcher.dispatchEvent( new LocaleDirEvent( LocaleDirEvent.CHANGE, localeDir ) )
 		}
 		
 		public function refresh() : void {

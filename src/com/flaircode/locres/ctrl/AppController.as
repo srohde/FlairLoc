@@ -2,8 +2,8 @@ package com.flaircode.locres.ctrl {
 	import com.flaircode.locres.event.AppEvent;
 	import com.flaircode.locres.model.AppModel;
 	import com.flaircode.locres.model.LocaleModel;
-	import com.flaircode.locres.view.AboutWindow;
-	import com.flaircode.locres.view.settings.SettingsWindow;
+	import com.flaircode.locres.view.window.AboutWindow;
+	import com.flaircode.locres.view.window.SettingsWindow;
 	import com.flaircode.util.FlaircodeUtils;
 	
 	import flash.display.NativeWindow;

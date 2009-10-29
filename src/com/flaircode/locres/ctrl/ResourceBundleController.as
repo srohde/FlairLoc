@@ -1,6 +1,6 @@
 package com.flaircode.locres.ctrl {
 	import com.flaircode.locres.model.LocaleModel;
-	import com.flaircode.locres.view.ResourceBundleCreateView;
+	import com.flaircode.locres.view.locale.ResourceBundleCreateView;
 	
 	import flash.display.DisplayObject;
 	

@@ -3,6 +3,7 @@
 
 	<fx:Script>
 		<![CDATA[
+			import mx.events.ListEvent;
 			import com.flaircode.locres.domain.LocaleDir;
 			import com.flaircode.locres.model.presentation.LocalePresentationModel;
 			
@@ -18,8 +19,12 @@
 					model.removeLocale( ld.locale );
 			}
 			
-			protected function button1_clickHandler( event : MouseEvent ) : void {
+			protected function removeResourceclickHandler( event : MouseEvent ) : void {
 				model.removeResourceBundle( resourceBundles.selectedItem as String );
+			}
+			
+			protected function localeGrid_changeHandler( event : ListEvent ) : void {
+				model.changeLocale( event.itemRenderer.data as LocaleDir );
 			}
 		]]>
 	</fx:Script>
@@ -47,7 +52,7 @@
 				   click="model.createResourceBundle()" />
 		<mx:Button width="20" height="20"
 				   styleName="minusButton" toolTip="{resourceManager.getString('lr', '$LR/Locale/RemoveResourceBundle')}"
-				   click="button1_clickHandler(event)" />
+				   click="removeResourceclickHandler(event)" />
 	</mx:HBox>
 
 	<mx:HBox width="100%"
@@ -62,7 +67,7 @@
 	</mx:HBox>
 
 	<mx:DataGrid id="localeGrid" width="100%" height="100%"
-				 enabled="{model.enabled}" selectedIndex="0" rowHeight="24" dataProvider="{model.localeDirs}">
+				 change="localeGrid_changeHandler(event)" enabled="{model.enabled}" selectedIndex="0" rowHeight="24" dataProvider="{model.localeDirs}">
 
 		<mx:columns>
 			<mx:DataGridColumn width="26"
