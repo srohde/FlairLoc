@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<swiz:BeanLoader xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:ctrl="com.flaircode.locres.ctrl.*" xmlns:model="com.flaircode.locres.model.*"
+				 xmlns:dao="com.flaircode.locres.dao.*" xmlns:helper="com.flaircode.locres.helper.*" xmlns:locale="org.flaircode.locale.*"
+				 xmlns:swiz="http://swiz.swizframework.org" xmlns:presentation="com.flaircode.locres.model.presentation.*">
+	<mx:Script>
+		<![CDATA[
+			import com.flaircode.locres.LocResConstants;
+			import com.flaircode.locres.model.presentation.*;
+		]]>
+	</mx:Script>
+
+	<model:AppModel id="locResModel" />
+	<ctrl:AppController id="locResController" />
+
+	<model:LocaleModel id="localeModel" />
+	<ctrl:LocaleController id="projectController" />
+
+	<helper:TitleViewHelper id="titleViewHelper" />
+	<helper:LocaleViewHelper id="projectViewHelper" />
+	<helper:ResourceViewHelper id="resourceViewHelper" />
+
+	<model:ResourceListModel id="resourceListModel" />
+	<ctrl:ResourceBundleController id="resourceBundleController" />
+
+	<ctrl:UserController id="userController" />
+	<model:UserModel id="userModel" />
+
+	<model:SourceModel id="sourceModel" />
+	<ctrl:SourceController id="sourceController" />
+
+	<presentation:LocalePresentationModel id="localePModel" />
+	<presentation:SourcePresentationModel id="sourcePModel" />
+	<presentation:ResourcePresentationModel id="resourcePModel" />
+
+	<dao:LocaleDAO id="localeDAO" />
+	<ctrl:TranslateController id="translateController" />
+	<locale:LocaleAPI id="localeAPI" />
+
+	<swiz:SharedObjectBean id="soBean"
+						   name="LocRes" />
+
+	<ctrl:UpdateController id="updateController" />
+	<desktop:SwizUpdateBean id="swizUpdateBean"
+							xmlns:desktop="org.swizframework.desktop.*" updateUrl="{LocResConstants.UPDATE_URL}" autoCheckUpdate="true"
+							autoStartUpdate="true" />
+
+
+</swiz:BeanLoader>

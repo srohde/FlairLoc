@@ -1,99 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<VBox xmlns="http://www.adobe.com/2006/mxml">
-	
-	<Script>
+<mx:VBox xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark" xmlns:mx="library://ns.adobe.com/flex/halo">
+
+	<fx:Script>
 		<![CDATA[
 			import com.flaircode.locres.domain.LocaleDir;
-			import com.flaircode.locres.event.ResourceBundleEvent;
-			import com.flaircode.locres.event.LocaleEvent;
-			import com.flaircode.locres.model.LocaleModel;
-			import com.flaircode.locres.model.SourceModel;
+			import com.flaircode.locres.model.presentation.LocalePresentationModel;
 			
-			[Bindable][Autowire]
-			public var localeModel:LocaleModel;
+			import flash.events.MouseEvent;
 			
-			[Bindable][Autowire]
-			public var sourceModel:SourceModel;
+			[Bindable]
+			[Autowire]
+			public var model:LocalePresentationModel;
 			
-			private function removeLocaleHandler(e:MouseEvent):void
-			{
+			private function removeLocaleHandler( e : MouseEvent ) : void {
 				var ld:LocaleDir = localeGrid.selectedItem as LocaleDir;
-				if(ld != null)
-				{
-					dispatchEvent(new LocaleEvent(LocaleEvent.REMOVE, ld.locale));
-				}
+				if ( ld != null )
+					model.removeLocale( ld.locale );
 			}
 			
+			protected function button1_clickHandler( event : MouseEvent ) : void {
+				model.removeResourceBundle( resourceBundles.selectedItem as String );
+			}
 		]]>
-	</Script>
-	
-	<Label text="{resourceManager.getString('lr', '$LR/Locale/Title')}" styleName="headline" />
-	
-	<Canvas width="100%">
-		<TextInput left="0" bottom="0" right="55" editable="false"
-			toolTip="{localeModel.localeDirPath}"
-			text="{localeModel.localeDirPath != null ? '.../' + localeModel.localeDir.parent.name + '/' + localeModel.localeDir.name : ''}" />
-		<Button bottom="5" right="25" width="20" height="15" styleName="browseButton"
-			toolTip="{resourceManager.getString('lr', '$LR/Locale/SelectLocaleDirectory')}"
-			click="dispatchEvent(new LocaleEvent(LocaleEvent.BROWSE_LOCALE_DIR))" />
-		<Button styleName="refreshButton" right="0" top="5"
-			enabled="{localeModel.localeDirPath != null}"
-			click="dispatchEvent(new LocaleEvent(LocaleEvent.REFRESH))"
-			toolTip="{resourceManager.getString('lr', '$LR/Locale/RefreshLocaleDirectory')}" />
-	</Canvas>
-	
-	<HBox verticalAlign="middle" width="100%" horizontalGap="5"
-		enabled="{localeModel.localeDirPath != null}">
-		<Label text="{resourceManager.getString('lr', '$LR/Locale/ResourceBundles')}" />
-		<ComboBox id="resourceBundles" dataProvider="{localeModel.resourceBundles}"
-			selectedIndex="{localeModel.selectedResourceBundleIndex}"
-			width="60" />
-		<Button styleName="plusButton" width="20" height="20"
-			toolTip="{resourceManager.getString('lr', '$LR/Locale/AddResourceBundle')}"
-			click="dispatchEvent(new ResourceBundleEvent(ResourceBundleEvent.CREATE, null))" />
-		<Button styleName="minusButton" width="20" height="20"
-			toolTip="{resourceManager.getString('lr', '$LR/Locale/RemoveResourceBundle')}"
-			click="dispatchEvent(new ResourceBundleEvent(ResourceBundleEvent.REMOVE, resourceBundles.selectedItem as String))" />
-	</HBox>
-	
-	<HBox verticalAlign="middle" width="100%" horizontalGap="5"
-		enabled="{localeModel.localeDirPath != null}">
-		<Label text="{resourceManager.getString('lr', '$LR/Locale/Locales')}" />
-		<Button id="addLocaleButton" styleName="plusButton" width="20" height="20"
-			toolTip="{resourceManager.getString('lr', '$LR/Locale/AddLocale')}"
-			enabled="{localeModel.resourceBundles.length != 0}" />
-		<Button id="removeLocaleButton" styleName="minusButton" width="20" height="20"
-			toolTip="{resourceManager.getString('lr', '$LR/Locale/RemoveLocale')}"
-			enabled="{localeGrid.selectedItem != null}"
-			click="removeLocaleHandler(event)" />
-	</HBox>
-	
-	<DataGrid id="localeGrid" width="100%" height="100%"
-		enabled="{localeModel.localeDirPath != null}"
-		selectedIndex="0"
-		rowHeight="24"
-		dataProvider="{localeModel.localeDirs}">
-		
-		<columns>
-			<DataGridColumn headerText="" width="26"
-				headerRenderer="com.flaircode.locres.view.itemrenderer.SaveAllHeaderRenderer"
-				sortable="false"
-				editable="false"
-				dataField="dirty"
-				itemRenderer="com.flaircode.locres.view.itemrenderer.SaveButtonItemRenderer">
-			</DataGridColumn>
-			<DataGridColumn headerText="{resourceManager.getString('lr', '$LR/Common/Locale')}" dataField="locale" width="60" />
-			<DataGridColumn headerText="{resourceManager.getString('lr', '$LR/Locale/ResourceBundles')}" dataField="resourceBundles" />
-			<DataGridColumn headerText="{resourceManager.getString('lr', '$LR/Common/Keys')}" dataField="keyCount" visible="true" width="50" />
-		</columns>
-		
-	</DataGrid>
-	
-	<Button width="100%" label="@Resource(bundle='lr', key='$LR/Locale/Button/SyncFromSource')"
-		enabled="{localeModel.localeDirPath != null}"
-		click="dispatchEvent(new LocaleEvent(LocaleEvent.SYNC_FROM_SOURCE))" />
-		
-	<Button width="100%" label="{resourceManager.getString('lr', '$LR/Source/GenerateCompileArgs')}"
-		click="dispatchEvent(new LocaleEvent(LocaleEvent.GENERATE_COMPILE_ARGS))" />
-	
-</VBox>
+	</fx:Script>
+
+	<s:Label text="{resourceManager.getString('lr', '$LR/Locale/Title')}" styleName="headline" />
+
+	<mx:Canvas width="100%">
+		<s:TextInput left="0" bottom="0" right="55"
+					 editable="false" toolTip="{model.localeDirPath}" text="{model.localeDirLabel}" />
+		<mx:Button bottom="5" right="25" width="20" height="15"
+				   styleName="browseButton" toolTip="{resourceManager.getString('lr', '$LR/Locale/SelectLocaleDirectory')}"
+				   click="model.browseLocaleDir()" />
+		<mx:Button right="0" top="5"
+				   styleName="refreshButton" enabled="{model.enabled}" click="model.refresh()"
+				   toolTip="{resourceManager.getString('lr', '$LR/Locale/RefreshLocaleDirectory')}" />
+	</mx:Canvas>
+
+	<mx:HBox width="100%"
+			 verticalAlign="middle" horizontalGap="5" enabled="{model.enabled}">
+		<s:Label text="{resourceManager.getString('lr', '$LR/Locale/ResourceBundles')}" />
+		<mx:ComboBox id="resourceBundles" width="60"
+					 dataProvider="{model.resourceBundles}" selectedIndex="{model.selectedResourceBundleIndex}" />
+		<mx:Button width="20" height="20"
+				   styleName="plusButton" toolTip="{resourceManager.getString('lr', '$LR/Locale/AddResourceBundle')}"
+				   click="model.createResourceBundle()" />
+		<mx:Button width="20" height="20"
+				   styleName="minusButton" toolTip="{resourceManager.getString('lr', '$LR/Locale/RemoveResourceBundle')}"
+				   click="button1_clickHandler(event)" />
+	</mx:HBox>
+
+	<mx:HBox width="100%"
+			 verticalAlign="middle" horizontalGap="5" enabled="{model.enabled}">
+		<s:Label text="{resourceManager.getString('lr', '$LR/Locale/Locales')}" />
+		<mx:Button id="addLocaleButton" width="20" height="20"
+				   styleName="plusButton" toolTip="{resourceManager.getString('lr', '$LR/Locale/AddLocale')}"
+				   enabled="{model.resourceBundles.length != 0}" />
+		<mx:Button id="removeLocaleButton" width="20" height="20"
+				   styleName="minusButton" toolTip="{resourceManager.getString('lr', '$LR/Locale/RemoveLocale')}"
+				   enabled="{localeGrid.selectedItem != null}" click="removeLocaleHandler(event)" />
+	</mx:HBox>
+
+	<mx:DataGrid id="localeGrid" width="100%" height="100%"
+				 enabled="{model.enabled}" selectedIndex="0" rowHeight="24" dataProvider="{model.localeDirs}">
+
+		<mx:columns>
+			<mx:DataGridColumn width="26"
+							   headerText="" headerRenderer="com.flaircode.locres.view.itemrenderer.SaveAllHeaderRenderer" sortable="false"
+							   editable="false" dataField="dirty" itemRenderer="com.flaircode.locres.view.itemrenderer.SaveButtonItemRenderer">
+			</mx:DataGridColumn>
+			<mx:DataGridColumn width="60"
+							   headerText="{resourceManager.getString('lr', '$LR/Common/Locale')}" dataField="locale" />
+			<mx:DataGridColumn headerText="{resourceManager.getString('lr', '$LR/Locale/ResourceBundles')}" dataField="resourceBundles" />
+			<mx:DataGridColumn width="50"
+							   headerText="{resourceManager.getString('lr', '$LR/Common/Keys')}" dataField="keyCount" visible="true" />
+		</mx:columns>
+
+	</mx:DataGrid>
+
+	<mx:Button width="100%"
+			   label="@Resource(bundle='lr', key='$LR/Locale/Button/SyncFromSource')" enabled="{model.enabled}" click="model.syncFromSource()" />
+
+	<mx:Button width="100%"
+			   label="{resourceManager.getString('lr', '$LR/Source/GenerateCompileArgs')}" click="model.generateCompilerArgs()" />
+
+</mx:VBox>

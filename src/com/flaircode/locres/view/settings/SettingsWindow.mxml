@@ -1,49 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Window xmlns="http://www.adobe.com/2006/mxml" layout="vertical" width="600" height="400"
-	paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10"
-	showStatusBar="false"
-	backgroundImage="@Embed(source='/../assets/chrome/appbg.png', scaleGridTop='2',
-        scaleGridBottom='51', scaleGridLeft='2', scaleGridRight='475')"
-	backgroundSize="100%"
-	title="{resourceManager.getString('lr', '$LR/Settings')}">
-	
-	<Script>
+<s:Window width="600" height="400" skinClass="com.flaircode.locres.view.skin.WindowSkin"
+		  xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark" xmlns:mx="library://ns.adobe.com/flex/halo"
+		  showStatusBar="false" title="{resourceManager.getString('lr', '$LR/Settings')}">
+
+	<s:layout>
+		<s:BasicLayout />
+	</s:layout>
+
+	<fx:Script>
 		<![CDATA[
 			import org.swizframework.Swiz;
 			import com.flaircode.locres.model.LocaleModel;
 			import com.flaircode.locres.event.UserEvent;
 			import com.flaircode.locres.model.UserModel;
 			
-			[Bindable][Autowire]
+			[Bindable]
+			[Autowire]
 			public var userModel:UserModel;
 			
-			[Bindable][Autowire]
+			[Bindable]
+			[Autowire]
 			public var localeModel:LocaleModel;
 			
-			private function onReset(e:Event):void
-			{
-				Swiz.dispatchEvent(new UserEvent(UserEvent.RESET));
+			private function onReset( e : Event ) : void {
+				Swiz.dispatchEvent( new UserEvent( UserEvent.RESET ) );
 			}
-			
 		]]>
-	</Script>
-	
-	<Button label="{resourceManager.getString('lr', '$LR/Settings/ResetUserSettings')}" click="onReset(event)" />
-	
-	<Form paddingLeft="0">
-		<FormHeading label="{resourceManager.getString('lr', '$LR/Settings/SyncSource')}" fontSize="12" />
-		<FormItem label="{resourceManager.getString('lr', '$LR/Settings/Prefix')}">
-			<!-- TODO refactor to event -->
-			<TextInput text="{localeModel.sourceSyncPrefix}"
-				change="localeModel.sourceSyncPrefix = event.currentTarget.text" />
-		</FormItem>
-		<FormItem label="{resourceManager.getString('lr', '$LR/Settings/SplitCamelCase')}">
-			<!-- TODO refactor to event -->
-			<CheckBox selected="{localeModel.splitCamelCase}"
-				change="localeModel.splitCamelCase = event.currentTarget.selected" />
-		</FormItem>
-		<!-- TODO enable source file extensions -->
-		<FormItem label="Source File Extentions" />
-	</Form>
-	
-</Window>
+	</fx:Script>
+
+	<s:VGroup top="10" left="10" right="10" bottom="10">
+
+		<mx:Button label="{resourceManager.getString('lr', '$LR/Settings/ResetUserSettings')}" click="onReset(event)" />
+
+		<mx:Form paddingLeft="0">
+			<mx:FormHeading label="{resourceManager.getString('lr', '$LR/Settings/SyncSource')}" fontSize="12" />
+			<mx:FormItem label="{resourceManager.getString('lr', '$LR/Settings/Prefix')}">
+				<!-- TODO refactor to event -->
+				<s:TextInput text="{localeModel.sourceSyncPrefix}" change="localeModel.sourceSyncPrefix = event.currentTarget.text" />
+			</mx:FormItem>
+			<mx:FormItem label="{resourceManager.getString('lr', '$LR/Settings/SplitCamelCase')}">
+				<!-- TODO refactor to event -->
+				<s:CheckBox selected="{localeModel.splitCamelCase}" change="localeModel.splitCamelCase = event.currentTarget.selected" />
+			</mx:FormItem>
+			<!-- TODO enable source file extensions -->
+			<mx:FormItem label="Source File Extentions" />
+		</mx:Form>
+
+	</s:VGroup>
+
+</s:Window>

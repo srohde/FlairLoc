@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <application xmlns="http://ns.adobe.com/air/application/1.5">
 
-<!-- Adobe AIR Application Descriptor File Template.
+	<!-- Adobe AIR Application Descriptor File Template.
 
-	Specifies parameters for identifying, installing, and launching AIR applications.
+		 Specifies parameters for identifying, installing, and launching AIR applications.
 
-	xmlns - The Adobe AIR namespace: http://ns.adobe.com/air/application/1.5
-			The last segment of the namespace specifies the version 
-			of the AIR runtime required for this application to run.
-			
-	minimumPatchLevel - The minimum patch level of the AIR runtime required to run 
-			the application. Optional.
--->
+		 xmlns - The Adobe AIR namespace: http://ns.adobe.com/air/application/1.5
+		 The last segment of the namespace specifies the version
+		 of the AIR runtime required for this application to run.
+
+		 minimumPatchLevel - The minimum patch level of the AIR runtime required to run
+		 the application. Optional.
+	-->
 
 	<!-- The application identifier string, unique to this application. Required. -->
 	<id>com.flairloc.FlairLoc</id>
@@ -19,15 +19,15 @@
 	<!-- Used as the filename for the application. Required. -->
 	<filename>FlairLoc</filename>
 
-	<!-- The name that is displayed in the AIR application installer. 
-	     May have multiple values for each language. See samples or xsd schema file. Optional. -->
+	<!-- The name that is displayed in the AIR application installer.
+		 May have multiple values for each language. See samples or xsd schema file. Optional. -->
 	<name>FlairLoc</name>
 
 	<!-- An application version designator (such as "v1", "2.5", or "Alpha 1"). Required. -->
-	<version>1.0.024 BETA</version>
+	<version>1.0.025 BETA</version>
 
 	<!-- Description, displayed in the AIR application installer.
-	     May have multiple values for each language. See samples or xsd schema file. Optional. -->
+		 May have multiple values for each language. See samples or xsd schema file. Optional. -->
 	<description>FlairLoc is a Flex localization tool. Developers can synchronize locale keys from source code to locale files. Translators find a UI to edit locale resource bundles.</description>
 
 	<!-- Copyright information. Optional -->
@@ -38,7 +38,7 @@
 		<!-- The main SWF or HTML file of the application. Required. -->
 		<!-- Note: In Flex Builder, the SWF reference is set automatically. -->
 		<content>[This value will be overwritten by Flex Builder in the output app.xml]</content>
-		
+
 		<!-- The title of the main window. Optional. -->
 		<!-- <title></title> -->
 
@@ -95,41 +95,41 @@
 	</icon>
 
 	<!-- Whether the application handles the update when a user double-clicks an update version
-	of the AIR file (true), or the default AIR application installer handles the update (false).
-	Optional. Default false. -->
+		 of the AIR file (true), or the default AIR application installer handles the update (false).
+		 Optional. Default false. -->
 	<!-- <customUpdateUI></customUpdateUI> -->
-	
+
 	<!-- Whether the application can be launched when the user clicks a link in a web browser.
-	Optional. Default false. -->
+		 Optional. Default false. -->
 	<!-- <allowBrowserInvocation></allowBrowserInvocation> -->
 
 	<!-- Listing of file types for which the application can register. Optional. -->
 	<!-- <fileTypes> -->
 
-		<!-- Defines one file type. Optional. -->
-		<!-- <fileType> -->
+	<!-- Defines one file type. Optional. -->
+	<!-- <fileType> -->
 
-			<!-- The name that the system displays for the registered file type. Required. -->
-			<!-- <name></name> -->
+	<!-- The name that the system displays for the registered file type. Required. -->
+	<!-- <name></name> -->
 
-			<!-- The extension to register. Required. -->
-			<!-- <extension></extension> -->
-			
-			<!-- The description of the file type. Optional. -->
-			<!-- <description></description> -->
-			
-			<!-- The MIME content type. -->
-			<!-- <contentType></contentType> -->
-			
-			<!-- The icon to display for the file type. Optional. -->
-			<!-- <icon>
-				<image16x16></image16x16>
-				<image32x32></image32x32>
-				<image48x48></image48x48>
-				<image128x128></image128x128>
-			</icon> -->
-			
-		<!-- </fileType> -->
+	<!-- The extension to register. Required. -->
+	<!-- <extension></extension> -->
+
+	<!-- The description of the file type. Optional. -->
+	<!-- <description></description> -->
+
+	<!-- The MIME content type. -->
+	<!-- <contentType></contentType> -->
+
+	<!-- The icon to display for the file type. Optional. -->
+	<!-- <icon>
+		 <image16x16></image16x16>
+		 <image32x32></image32x32>
+		 <image48x48></image48x48>
+		 <image128x128></image128x128>
+		 </icon> -->
+
+	<!-- </fileType> -->
 	<!-- </fileTypes> -->
 
 </application>

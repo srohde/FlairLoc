@@ -1,58 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="300">
-	
-	<mx:Script>
-		<![CDATA[
-			import com.flaircode.locres.event.SourceEvent;
-			import com.flaircode.locres.model.SourceModel;
-			
-			[Bindable][Autowire]
-			public var sourceModel:SourceModel;
-			
-			
-			protected function refreshSourceDirHandler(e:MouseEvent):void
-			{
-				//dispatchEvent(new AppEvent(AppEvent.REFRESH_SOURCE_DIR));
-			}
-			
-		]]>
-	</mx:Script>
-	
-	<mx:Label text="{resourceManager.getString('lr', '$LR/Source/Title')}" styleName="headline" />
+<mx:VBox width="400" height="300"
+		 xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/halo" xmlns:s="library://ns.adobe.com/flex/spark">
 
-	<mx:HBox width="100%" verticalAlign="middle">
-		<mx:TextInput editable="false" width="100%"
-			toolTip="{sourceModel.sourceDir.nativePath}"
-			text="{sourceModel.sourceDir != null ? '.../' + sourceModel.sourceDir.parent.name + '/' + sourceModel.sourceDir.name : ''}" />
-		<mx:Button height="15" styleName="browseButton"
-			toolTip="{resourceManager.getString('lr', '$LR/Source/SelectSourceDirectory')}"
-			click="dispatchEvent(new SourceEvent(SourceEvent.BROWSE_DIR))" />
-		<mx:Button styleName="refreshButton"
-			enabled="{sourceModel.sourceDir != null}"
-			click="dispatchEvent(new SourceEvent(SourceEvent.REFRESH))"
-			toolTip="{resourceManager.getString('lr', '$LR/Source/RefreshSourceDirectory')}" />
+
+	<fx:Script>
+		<![CDATA[
+			import com.flaircode.locres.model.presentation.SourcePresentationModel;
+			
+			[Bindable]
+			[Autowire]
+			public var model:SourcePresentationModel;
+		]]>
+	</fx:Script>
+
+	<s:Label text="{resourceManager.getString('lr', '$LR/Source/Title')}" styleName="headline" />
+
+	<mx:HBox width="100%"
+			 verticalAlign="middle">
+		<mx:TextInput width="100%"
+					  editable="false" toolTip="{model.sourceDirPath}" text="{model.sourceDirLabel}" />
+		<mx:Button height="15"
+				   styleName="browseButton" toolTip="{resourceManager.getString('lr', '$LR/Source/SelectSourceDirectory')}"
+				   click="model.browseSourceDir()" />
+		<mx:Button styleName="refreshButton" enabled="{model.enabled}" click="model.refresh()"
+				   toolTip="{resourceManager.getString('lr', '$LR/Source/RefreshSourceDirectory')}" />
 	</mx:HBox>
-	
-	<mx:HBox width="100%" verticalAlign="middle">
-		<mx:Label text="{resourceManager.getString('lr', '$LR/Source/KeyPrefix')}" />
+
+	<mx:HBox width="100%"
+			 verticalAlign="middle">
+		<s:Label text="{resourceManager.getString('lr', '$LR/Source/KeyPrefix')}" />
 		<mx:TextInput id="sourceKey" width="100%"
-			text="{sourceModel.sourceKey}"
-			change="sourceModel.sourceKey = event.currentTarget.text" />
+					  text="{model.sourceKey}" change="model.changeSourceKey(event.currentTarget.text)" />
 	</mx:HBox>
-	
+
 	<mx:HBox width="100%">
-		<mx:Label text="{resourceManager.getString('lr', '$LR/Source/Files0', [sourceModel.sourceFiles.length])}" />
-		<mx:Label text="{resourceManager.getString('lr', '$LR/Source/LOC0', [sourceModel.loc])}" />
-		<mx:Label text="{resourceManager.getString('lr', '$LR/Source/Key0', [sourceModel.getKeys(sourceKey.text).length])}" />
+		<s:Label text="{resourceManager.getString('lr', '$LR/Source/Files0', [model.sourceFiles.length])}" />
+		<s:Label text="{resourceManager.getString('lr', '$LR/Source/LOC0', [model.loc])}" />
+		<s:Label text="{resourceManager.getString('lr', '$LR/Source/Key0', [model.keys.length])}" />
 	</mx:HBox>
-	
-	<mx:DataGrid selectable="false" width="100%" height="100%"
-		dataProvider="{sourceModel.getKeys(sourceKey.text)}">
+
+	<mx:DataGrid width="100%" height="100%"
+				 selectable="false" dataProvider="{model.keys}">
 		<mx:columns>
-			<mx:DataGridColumn headerText="{resourceManager.getString('lr', '$LR/Common/Bundle')}" dataField="resourceBundle" width="50" />
+			<mx:DataGridColumn width="50"
+							   headerText="{resourceManager.getString('lr', '$LR/Common/Bundle')}" dataField="resourceBundle" />
 			<mx:DataGridColumn headerText="{resourceManager.getString('lr', '$LR/Common/Key')}" dataField="key" showDataTips="true" dataTipField="key" />
-			<mx:DataGridColumn headerText="#" dataField="count" width="30" />
+			<mx:DataGridColumn width="30"
+							   headerText="#" dataField="count" />
 		</mx:columns>
 	</mx:DataGrid>
-	
+
 </mx:VBox>

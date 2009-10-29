@@ -1,3 +1,6 @@
+@namespace s "library://ns.adobe.com/flex/spark";
+@namespace mx "library://ns.adobe.com/flex/halo";
+
 .saveButton {
 	up-skin: Embed(source='/../assets/icon/save_over.png');
 	over-skin: Embed(source='/../assets/icon/save_up.png');
@@ -40,7 +43,11 @@
 	disabled-skin: Embed(source='/../assets/refresh_up.png');
 }
 
-Button
+mx|Button
+{
+	corner-radius: 0;	
+}
+s|Button
 {
 	corner-radius: 0;	
 }

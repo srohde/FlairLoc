@@ -1,64 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Canvas xmlns="http://www.adobe.com/2006/mxml" xmlns:view="com.flaircode.locres.view.*"
-	backgroundAlpha="1"
-	cacheAsBitmap="true"
-	top="{appModel.maximized ? 0 : 10}" left="{appModel.maximized ? 0 : 10}" right="{appModel.maximized ? 0 : 10}" bottom="{appModel.maximized ? 0 : 10}"
-	backgroundColor="#c1c1c1"
-	filters="{[gf]}"
-	xmlns:locale="com.flaircode.locres.view.locale.*" xmlns:project="com.flaircode.locres.view.project.*">
-	
-		<!--<DropShadowFilter id="ds" 
-			strength=".5"
-			quality="20"
-			distance="10" />-->
-	
-	<GlowFilter id="gf" quality="4" color="#666666"
-		blurX="10" blurY="10"
-		strength="1" />
-	
-	<Script>
+<s:Group top="{appModel.maximized ? 0 : 10}" left="{appModel.maximized ? 0 : 10}" right="{appModel.maximized ? 0 : 10}"
+		 bottom="{appModel.maximized ? 0 : 10}"
+		 xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark" xmlns:mx="library://ns.adobe.com/flex/halo"
+		 xmlns:view="com.flaircode.locres.view.*" filters="{[gf]}" xmlns:locale="com.flaircode.locres.view.locale.*"
+		 xmlns:project="com.flaircode.locres.view.project.*">
+
+	<!--<DropShadowFilter id="ds"
+		 strength=".5"
+		 quality="20"
+		 distance="10" />-->
+
+	<fx:Declarations>
+		<s:GlowFilter id="gf"
+					  quality="4" color="#666666" blurX="10" blurY="10" strength="1" />
+	</fx:Declarations>
+
+	<fx:Script>
 		<![CDATA[
-			import com.flaircode.util.SharedObjectBean;
-			import mx.core.Application;
 			import com.flaircode.locres.LocResConstants;
 			import com.flaircode.locres.model.AppModel;
-
-			[Bindable][Autowire]
+			
+			import mx.core.FlexGlobals;
+			
+			import org.swizframework.storage.ISharedObjectBean;
+			
+			[Bindable]
+			[Autowire]
 			public var appModel:AppModel;
 			
 			[Autowire]
-			public var soBean:SharedObjectBean;
-			
+			public var soBean:ISharedObjectBean;
 		]]>
-	</Script>
-	
-	
-	<view:TitleView width="100%" height="{LocResConstants.TITLE_HEIGHT}"
-		cacheAsBitmap="true"  />
-	
+	</fx:Script>
 
-	<project:ContentView width="100%" height="100%"
-		top="{LocResConstants.TITLE_HEIGHT}"
-		bottom="{LocResConstants.FOOTER_HEIGHT}" />
-	
-	<Canvas
-		backgroundImage="@Embed(source='/../assets/chrome/appbg.png', scaleGridTop='2',
-            scaleGridBottom='51', scaleGridLeft='2', scaleGridRight='475')"
-		backgroundSize="100%"
-		width="100%" height="{LocResConstants.FOOTER_HEIGHT}" left="0" bottom="0"
-		backgroundAlpha="1" backgroundColor="#838171">
-		
-		<Label text="{appModel.statusMsg}" left="10" verticalCenter="0"
-			fontSize="10" />
-		
-		<Label text="{resourceManager.getString('lr', '$LR/Copyright')}" verticalCenter="0" right="20"
-			fontWeight="normal"
-			fontSize="9" />
-		
-		<Image source="@Embed(source='/../assets/chrome/resize.png')" right="2" bottom="2"
-			mouseDown="Application.application.nativeWindow.startResize()"
-		/>
-	</Canvas>
-		
-	
-</Canvas>
+
+	<view:TitleView width="100%" height="{LocResConstants.TITLE_HEIGHT}"
+					cacheAsBitmap="true" />
+
+
+	<mx:Image left="0" right="0" top="{LocResConstants.TITLE_HEIGHT}" bottom="{LocResConstants.FOOTER_HEIGHT}"
+			  scaleContent="true" maintainAspectRatio="false"
+			  source="@Embed(source='/../assets/chrome/appbg.png',scaleGridTop='2',scaleGridBottom='51',scaleGridLeft='2',scaleGridRight='475')" />
+
+	<project:ContentView width="100%" height="100%" top="{LocResConstants.TITLE_HEIGHT}" bottom="{LocResConstants.FOOTER_HEIGHT}" />
+
+	<mx:Image left="0" right="0" height="{LocResConstants.FOOTER_HEIGHT}" bottom="0"
+			  scaleContent="true" maintainAspectRatio="false"
+			  source="@Embed(source='/../assets/chrome/appbg.png',scaleGridTop='2',scaleGridBottom='51',scaleGridLeft='2',scaleGridRight='475')" />
+
+	<mx:Canvas width="100%" height="{LocResConstants.FOOTER_HEIGHT}" left="0" bottom="0">
+
+		<s:Label left="10"
+				 text="{appModel.statusMsg}" verticalCenter="0" fontSize="10" />
+
+		<s:Label right="20"
+				 text="{resourceManager.getString('lr', '$LR/Copyright')}" verticalCenter="0" fontWeight="normal" fontSize="9" />
+
+		<mx:Image right="2" bottom="2"
+				  source="@Embed(source='/../assets/chrome/resize.png')" mouseDown="FlexGlobals.topLevelApplication.nativeWindow.startResize()" />
+	</mx:Canvas>
+
+
+</s:Group>

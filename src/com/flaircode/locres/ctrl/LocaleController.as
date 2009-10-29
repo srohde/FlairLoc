@@ -1,5 +1,4 @@
-package com.flaircode.locres.ctrl
-{
+package com.flaircode.locres.ctrl {
 	import com.flaircode.locres.domain.LocaleDir;
 	import com.flaircode.locres.domain.SourceKey;
 	import com.flaircode.locres.model.LocaleModel;
@@ -9,7 +8,6 @@ package com.flaircode.locres.ctrl
 	import com.flaircode.util.FileUtils;
 	import com.flaircode.util.FlaircodeUtils;
 	import com.flaircode.util.LocaleUtil;
-	import com.flaircode.util.SharedObjectBean;
 	
 	import flash.display.NativeWindowType;
 	import flash.events.Event;
@@ -17,313 +15,263 @@ package com.flaircode.locres.ctrl
 	
 	import mx.collections.ArrayCollection;
 	import mx.controls.Alert;
-	import mx.core.Window;
 	import mx.events.CloseEvent;
 	import mx.logging.ILogger;
 	import mx.logging.Log;
 	import mx.utils.StringUtil;
 	
 	import org.swizframework.Swiz;
-
-	public class LocaleController
-	{
+	import org.swizframework.factory.IInitializingBean;
+	import org.swizframework.storage.ISharedObjectBean;
+	
+	import spark.components.Window;
+	
+	public class LocaleController implements IInitializingBean {
 		
-		private static const logger:ILogger = Log.getLogger("LocaleController");
+		private static const logger:ILogger = Log.getLogger( "LocaleController" );
 		
 		[Autowire]
-		public var localeModel:LocaleModel;
+		public var model:LocaleModel;
 		
 		[Autowire]
 		public var sourceModel:SourceModel;
 		
 		[Autowire]
-		public var soBean:SharedObjectBean;
+		public var so:ISharedObjectBean;
 		
-		public function LocaleController()
-		{
-		}
-		
-	
-		[Mediate(event="DirtyEvent.DIRTY")]
-		public function dirtyHandler():void
-		{
-			localeModel.dirty = true;
-		}
-		
-		[Mediate(event="AppEvent.INIT")]
-		public function initHandler():void
-		{
-			if(localeModel.localeDirPath != null)
-			{
-				var f:File = new File(localeModel.localeDirPath);
-				if(f.exists)
-				{
-					initLocaleDir(f);
-				}
-				else
-				{
-					logger.warn("Latest localeDirPath does not exist anymore " + localeModel.localeDirPath);
-					localeModel.localeDirPath = null;
-				}
-			}			
+		public function LocaleController() {
 		}
 		
 		[Mediate(event="LocaleEvent.REFRESH")]
-		public function refresh():void
-		{
-			initHandler();
+		public function initialize() : void {
+			var path:String = so.getString( "localeDirPath" );
+			if ( path != null ) {
+				var f:File = new File( path );
+				if ( f.exists && f.isDirectory ) {
+					initLocaleDir( f );
+				}
+			}
+		}
+		
+		[Mediate(event="DirtyEvent.DIRTY")]
+		public function dirtyHandler() : void {
+			model.dirty = true;
 		}
 		
 		[Mediate(event="LocaleEvent.CREATE", properties="locale")]
-		public function createLocale(localeCode:String):void
-		{
+		public function createLocale( localeCode : String ) : void {
 			var localeDir:LocaleDir = new LocaleDir();
 			localeDir.locale = localeCode;
 			localeDir.resourceBundles = new ArrayCollection();
-			localeDir.path = localeModel.localeDirPath + "/" + localeCode;
-			localeDir.selectedResourceBundle = localeModel.selectedResourceBundle;
+			localeDir.path = model.localeDir.nativePath + "/" + localeCode;
+			localeDir.selectedResourceBundle = model.selectedResourceBundle;
 			
-			localeModel.localeDirs.addItem(localeDir);
-			localeModel.locales.addItem(localeCode);
+			model.localeDirs.addItem( localeDir );
+			model.locales.addItem( localeCode );
 		}
 		
 		[Mediate(event="LocaleEvent.REMOVE", properties="locale")]
-		public function removeLocale(locale:String):void
-		{
-			var ld:LocaleDir = localeModel.getLocaleDirByCode(locale);
+		public function removeLocale( locale : String ) : void {
+			var ld:LocaleDir = model.getLocaleDirByCode( locale );
 			
 			var msg:String = "Are you sure to delete {0} with all its contents?"
-			msg = StringUtil.substitute(msg, ld.path);
-			Alert.show(msg, "Delete Locale", Alert.OK | Alert.CANCEL, null, function(e:CloseEvent):void
-			{
-				if(e.detail == Alert.OK)
+			msg = StringUtil.substitute( msg, ld.path );
+			Alert.show( msg, "Delete Locale", Alert.OK | Alert.CANCEL, null, function( e : CloseEvent ) : void
 				{
-					var index:int = localeModel.localeDirs.getItemIndex(ld);
-					localeModel.localeDirs.removeItemAt(index);
-					var f:File = new File(ld.path);
-					if(f.exists && f.isDirectory)
+					if ( e.detail == Alert.OK )
 					{
-						f.deleteDirectory(true);
+						var index:int = model.localeDirs.getItemIndex( ld );
+						model.localeDirs.removeItemAt( index );
+						var f:File = new File( ld.path );
+						if ( f.exists && f.isDirectory )
+						{
+							f.deleteDirectory( true );
+						}
+						
+						var localeIndex:int = model.locales.getItemIndex( locale );
+						model.locales.removeItemAt( localeIndex );
 					}
-					
-					var localeIndex:int = localeModel.locales.getItemIndex(locale);
-					localeModel.locales.removeItemAt(localeIndex);
-				}
-			});
-			
+				} );
+		
 		}
 		
 		[Mediate(event="LocaleEvent.BROWSE_LOCALE_DIR")]
-		public function browseLocaleDirHandler():void
-		{
+		public function browseLocaleDirHandler() : void {
 			var f:File = new File();
-			f.browseForDirectory("Select Locale Directory");
-			f.addEventListener(Event.SELECT, onBrowseLocaleDir);
+			f.browseForDirectory( "Select Locale Directory" );
+			f.addEventListener( Event.SELECT, onBrowseLocaleDir );
 		}
 		
-		protected function onBrowseLocaleDir(e:Event):void
-		{
-			initLocaleDir(e.currentTarget as File);
+		protected function onBrowseLocaleDir( e : Event ) : void {
+			initLocaleDir( e.currentTarget as File );
 		}
 		
-		protected function initLocaleDir(rootLocaleDir:File):void
-		{
+		protected function initLocaleDir( rootLocaleDir : File ) : void {
+			
 			// set path
-			localeModel.localeDirPath = rootLocaleDir.nativePath;
+			model.localeDir = rootLocaleDir;
+			// store in SO
+			so.setString( "localeDirPath", rootLocaleDir.nativePath );
+			
 			// set locales
-			localeModel.locales = LocaleUtil.getLocalesFromDir(rootLocaleDir);
+			model.locales = LocaleUtil.getLocalesFromDir( rootLocaleDir );
 			// set resource bundles
-			localeModel.resourceBundles = LocaleUtil.getResourceBundlesFromPath(rootLocaleDir, localeModel.locales);
+			model.resourceBundles = LocaleUtil.getResourceBundlesFromPath( rootLocaleDir, model.locales );
 			
 			// set selectedResourceBundle
-			if(localeModel.resourceBundles != null && localeModel.resourceBundles.length > 0)
-			{
-				localeModel.selectedResourceBundle = localeModel.resourceBundles.getItemAt(0) as String;
+			if ( model.resourceBundles != null && model.resourceBundles.length > 0 ) {
+				model.selectedResourceBundle = model.resourceBundles.getItemAt( 0 ) as String;
 			}
 			
 			// set localeDirs
 			var localeDirs:ArrayCollection = new ArrayCollection();
-			for each(var locale:String in localeModel.locales)
-			{
-				var localeDir:File = rootLocaleDir.resolvePath(locale);
-				if(!localeDir.exists)
-				{
-					throw new Error("Locale directory does not exist " + localeDir.nativePath);
-				}
-				else
-				{
+			for each ( var locale : String in model.locales ) {
+				var localeDir:File = rootLocaleDir.resolvePath( locale );
+				if ( !localeDir.exists ) {
+					throw new Error( "Locale directory does not exist " + localeDir.nativePath );
+				} else {
 					var ld:LocaleDir = new LocaleDir();
 					ld.locale = locale;
-					ld.path = localeModel.localeDirPath + "/" + locale;
-					ld.resourceBundles = LocaleUtil.getResourceBundlesForLocale(rootLocaleDir, locale);
-					ld.selectedResourceBundle = localeModel.selectedResourceBundle;
-					localeDirs.addItem(ld);
+					ld.path = model.localeDir.nativePath + "/" + locale;
+					ld.resourceBundles = LocaleUtil.getResourceBundlesForLocale( rootLocaleDir, locale );
+					ld.selectedResourceBundle = model.selectedResourceBundle;
+					localeDirs.addItem( ld );
 				}
 			}
 			
-			localeModel.localeDirs = localeDirs;
+			model.localeDirs = localeDirs;
 			
-			if(localeDirs.length > 0)
-			{
-				localeModel.selectedLocaleDir = localeDirs.getItemAt(0) as LocaleDir;
+			if ( localeDirs.length > 0 ) {
+				model.selectedLocaleDir = localeDirs.getItemAt( 0 ) as LocaleDir;
 			}
 		}
 		
 		[Mediate(event="LocaleEvent.SAVE_ALL")]
-		public function saveAllHandler():void
-		{
-			logger.info("saveAll");
+		public function saveAllHandler() : void {
+			logger.info( "saveAll" );
 			
-			for each(var ld:LocaleDir in localeModel.localeDirs)
-			{
-				if(ld.dirty)
-				{
-					saveLocale(ld);
+			for each ( var ld : LocaleDir in model.localeDirs ) {
+				if ( ld.dirty ) {
+					saveLocale( ld );
 				}
 			}
 			
-			localeModel.dirty = false;
+			model.dirty = false;
 		}
 		
 		[Mediate(event="LocaleEvent.SYNC_FROM_SOURCE")]
-		public function syncFromSource():void
-		{
-			if(localeModel.localeDirs != null && localeModel.localeDirs.length > 0)
-			{
-				for each(var ld:LocaleDir in localeModel.localeDirs)
-				{
-					ld.syncWithKeys(sourceModel.getKeys(sourceModel.sourceKey), localeModel.sourceSyncPrefix, localeModel.splitCamelCase);
+		public function syncFromSource() : void {
+			if ( model.localeDirs != null && model.localeDirs.length > 0 ) {
+				for each ( var ld : LocaleDir in model.localeDirs ) {
+					ld.syncWithKeys( sourceModel.keys, model.sourceSyncPrefix, model.splitCamelCase );
 				}
-			}
-			else
-			{
-				/* var localeDirRef:File = new File(localeModel.localeDirPath);
-				var usFolder:File = localeDirRef.resolvePath("en_US")
-				usFolder.createDirectory(); */
+			} else {
 				
 				var localeCode:String = "en_US";
 				
-				var keys:ArrayCollection = sourceModel.getKeys(sourceModel.sourceKey);
-				var sourceKey:SourceKey = keys.getItemAt(0) as SourceKey;
-				localeModel.locales.addItem("en_US");
-				localeModel.resourceBundles = new ArrayCollection();
-				localeModel.resourceBundles.addItem(sourceKey.resourceBundle);
-				localeModel.selectedResourceBundle = sourceKey.resourceBundle;
+				var keys:ArrayCollection = sourceModel.keys;
+				var sourceKey:SourceKey = keys.getItemAt( 0 ) as SourceKey;
+				model.locales.addItem( "en_US" );
+				model.resourceBundles = new ArrayCollection();
+				model.resourceBundles.addItem( sourceKey.resourceBundle );
+				model.selectedResourceBundle = sourceKey.resourceBundle;
 				
 				var localeDir:LocaleDir = new LocaleDir();
 				localeDir.locale = localeCode;
 				localeDir.resourceBundles = new ArrayCollection();
-				localeDir.path = localeModel.localeDirPath + "/" + localeCode;
-				localeDir.selectedResourceBundle = localeModel.selectedResourceBundle;
+				localeDir.path = model.localeDir.nativePath + "/" + localeCode;
+				localeDir.selectedResourceBundle = model.selectedResourceBundle;
 				
-				localeModel.localeDirs.addItem(localeDir);
+				model.localeDirs.addItem( localeDir );
 				
-				localeDir.syncWithKeys(sourceModel.getKeys(sourceModel.sourceKey), localeModel.sourceSyncPrefix, localeModel.splitCamelCase);
+				localeDir.syncWithKeys( sourceModel.keys, model.sourceSyncPrefix, model.splitCamelCase );
 			}
 		}
 		
 		[Mediate(event="LocaleEvent.GENERATE_COMPILE_ARGS")]
-		public function generate():void
-		{
-			var w:Window = new CompileArgsWindow();
+		public function generate() : void {
+			var w:spark.components.Window = new CompileArgsWindow();
 			w.systemChrome = "none";
 			w.transparent = true;
 			w.type = NativeWindowType.LIGHTWEIGHT;
-			Swiz.getInstance().registerWindow(w);
+			Swiz.getInstance().registerWindow( w );
 			w.open();
-			FlaircodeUtils.centerToScreen(w);
+			FlaircodeUtils.centerToScreen( w );
 		}
 		
 		[Mediate(event="LocaleEvent.PREVIEW_LOCALE")]
-		public function previewLocale():void
-		{
-			logger.info("previewLocale");
+		public function previewLocale() : void {
+			logger.info( "previewLocale" );
 			
 			var slv:LocalePreviewView = new LocalePreviewView();
-			Swiz.getInstance().registerWindow(slv);
+			Swiz.getInstance().registerWindow( slv );
 			slv.width = 800;
 			slv.height = 600;
 			slv.open();
-			FlaircodeUtils.centerToScreen(slv);
+			FlaircodeUtils.centerToScreen( slv );
 		}
 		
 		[Mediate(event="LocaleDirEvent.SAVE", properties="localeDir")]
-		public function saveLocale(localeDir:LocaleDir):void
-		{
-			logger.debug("save " + localeDir.path);
+		public function saveLocale( localeDir : LocaleDir ) : void {
+			logger.debug( "save " + localeDir.path );
 			var res:String = localeDir.toString();
-			var f:File = new File(localeDir.path + "/" + localeModel.selectedResourceBundle + ".properties");
-			if(f.exists)
-			{
-				FileUtils.writeUTFBytes(f, res);
+			var f:File = new File( localeDir.path + "/" + model.selectedResourceBundle + ".properties" );
+			if ( f.exists ) {
+				FileUtils.writeUTFBytes( f, res );
 				localeDir.dirty = false;
-			}
-			else
-			{
+			} else {
 				// TODO handle file does not exist
 			}
 			
 			var stillDirty:Boolean = false;
-			for each(var ld:LocaleDir in localeModel.localeDirs)
-			{
-				if(ld.dirty)
-				{
+			for each ( var ld : LocaleDir in model.localeDirs ) {
+				if ( ld.dirty ) {
 					stillDirty = true;
 					break;
 				}
 			}
 			
-			localeModel.dirty = stillDirty;
+			model.dirty = stillDirty;
 		}
 		
 		[Mediate(event="LocaleEvent.CANCEL_LOCALE")]
-		public function cancelHandler():void
-		{
-			var res:String = localeModel.selectedLocaleDir.toString();
-			var filePath:String = localeModel.localeDirPath + "/"
-			filePath +=  localeModel.selectedLocaleDir.locale + "/"
-			filePath += localeModel.selectedResourceBundle + ".properties";
-			var f:File = new File(filePath);
-			if(f.exists)
-			{
+		public function cancelHandler() : void {
+			var res:String = model.selectedLocaleDir.toString();
+			var filePath:String = model.localeDir.nativePath + "/"
+			filePath +=  model.selectedLocaleDir.locale + "/"
+			filePath += model.selectedResourceBundle + ".properties";
+			var f:File = new File( filePath );
+			if ( f.exists ) {
 				// TODO implement cancel
-			}
-			else
-			{
+			} else {
 				// TODO handle file does not exist
 			}
 		}
 		
 		[Mediate(event="LocaleEvent.WRITE_LOCALE")]
-		public function writeLocale():void
-		{
-			var res:String = localeModel.selectedLocaleDir.toString();
-			var filePath:String = localeModel.localeDirPath + "/"
-			filePath +=  localeModel.selectedLocaleDir.locale + "/"
-			filePath += localeModel.selectedResourceBundle + ".properties";
-			var f:File = new File(filePath);
-			if(f.exists)
-			{
-				FileUtils.writeUTFBytes(f, res);
-				localeModel.selectedLocaleDir.dirty = false;
-			}
-			else
-			{
+		public function writeLocale() : void {
+			var res:String = model.selectedLocaleDir.toString();
+			var filePath:String = model.localeDir.nativePath + "/"
+			filePath +=  model.selectedLocaleDir.locale + "/"
+			filePath += model.selectedResourceBundle + ".properties";
+			var f:File = new File( filePath );
+			if ( f.exists ) {
+				FileUtils.writeUTFBytes( f, res );
+				model.selectedLocaleDir.dirty = false;
+			} else {
 				// TODO handle file does not exist
 			}
 		}
 		
 		[Mediate(event="LocaleDirEvent.CHANGE", properties="localeDir")]
-		public function changeLocaleDir(localeDir:LocaleDir):void
-		{
-			localeModel.selectedLocaleDir = localeDir;
+		public function changeLocaleDir( localeDir : LocaleDir ) : void {
+			model.selectedLocaleDir = localeDir;
 		}
 		
 		[Mediate(event="ResourceSearchEvent.SEARCH", properties="searchQuery")]
-		public function searchResource(searchQuery:String):void
-		{
-			localeModel.searchResource(searchQuery);
+		public function searchResource( searchQuery : String ) : void {
+			model.searchResource( searchQuery );
 		}
-
+	
 	}
 }

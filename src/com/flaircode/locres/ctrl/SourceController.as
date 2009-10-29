@@ -1,45 +1,42 @@
 package com.flaircode.locres.ctrl {
 	import com.flaircode.locres.domain.SourceFile;
+	import com.flaircode.locres.domain.SourceKey;
 	import com.flaircode.locres.model.SourceModel;
-	import com.flaircode.locres.view.source.CompileArgsWindow;
-	import com.flaircode.util.FlaircodeUtils;
 	
-	import flash.display.NativeWindowType;
 	import flash.events.Event;
 	import flash.filesystem.File;
+	import flash.utils.Dictionary;
 	
 	import mx.collections.ArrayCollection;
-	import mx.core.Window;
 	import mx.logging.ILogger;
 	import mx.logging.Log;
 	
-	import org.swizframework.Swiz;
+	import org.swizframework.factory.IInitializingBean;
+	import org.swizframework.storage.ISharedObjectBean;
 	
-	public class SourceController {
+	public class SourceController implements IInitializingBean {
 		private static const logger:ILogger = Log.getLogger( "SourceController" );
 		
 		[Autowire]
-		public var sourceModel:SourceModel;
+		public var model:SourceModel;
+		
+		[Autowire]
+		public var so:ISharedObjectBean;
 		
 		public function SourceController() {
 		}
 		
-		[Mediate(event="AppEvent.INIT")]
-		public function initHandler() : void {
-			if ( sourceModel.sourceDir != null ) {
-				if ( sourceModel.sourceDir.exists ) {
-					parseSourceDir( sourceModel.sourceDir );
-					sourceModel.handleFilesChange();
-				} else {
-					logger.warn( "Latest sourcePath does not exist anymore " + sourceModel.sourceDir.nativePath );
-					sourceModel.sourceDir = null;
+		[Mediate(event="SourceEvent.REFRESH")]
+		public function initialize() : void {
+			model.sourceKey = so.getString( "sourceKey", "$Key" );
+			
+			var path:String = so.getString( "sourceDir" );
+			if ( path != null ) {
+				var f:File = new File( path );
+				if ( f.exists && f.isDirectory ) {
+					initSourceDir( f );
 				}
 			}
-		}
-		
-		[Mediate(event="SourceEvent.REFRESH")]
-		public function refresh() : void {
-			initHandler();
 		}
 		
 		[Mediate(event="SourceEvent.BROWSE_DIR")]
@@ -51,8 +48,40 @@ package com.flaircode.locres.ctrl {
 		
 		protected function dirSelectHandler( e : Event ) : void {
 			var f:File = e.currentTarget as File;
-			parseSourceDir( f );
-			sourceModel.sourceDir = f;
+			initSourceDir( f );
+		}
+		
+		protected function initSourceDir( dir : File ) : void {
+			parseSourceDir( dir );
+			model.sourceDir = dir;
+			so.setString( "sourceDir", dir.nativePath );
+			
+			model.keys = getKeys( model.sourceKey );
+		}
+		
+		[Mediate(event="SourceEvent.KEY_CHANGE")]
+		public function keyChange() : void {
+			so.setString( "sourceKey", model.sourceKey );
+			model.keys = getKeys( model.sourceKey );
+		}
+		
+		public function getKeys( key : String ) : ArrayCollection {
+			var res:Array = new Array();
+			for each ( var sf : SourceFile in model.sourceFiles ) {
+				var a:Array = sf.getByKey( key )
+				res = res.concat( a );
+			}
+			
+			var dict:Dictionary = new Dictionary();
+			var uniqueRes:Array = [];
+			for each ( var sk : SourceKey in res ) {
+				if ( dict[sk.key] == null ) {
+					dict[sk.key] = {};
+					uniqueRes.push( sk );
+				}
+			}
+			
+			return new ArrayCollection( uniqueRes );
 		}
 		
 		protected function parseSourceDir( dir : File ) : void {
@@ -73,8 +102,8 @@ package com.flaircode.locres.ctrl {
 				loc += sf.loc;
 			}
 			
-			sourceModel.sourceFiles = new ArrayCollection( sourceFiles );
-			sourceModel.loc = loc;
+			model.sourceFiles = new ArrayCollection( sourceFiles );
+			model.loc = loc;
 		}
 		
 		/**

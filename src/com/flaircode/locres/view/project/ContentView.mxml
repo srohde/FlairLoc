@@ -1,26 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<HDividedBox xmlns="http://www.adobe.com/2006/mxml"
-	width="100%" height="100%"
-	backgroundImage="@Embed(source='/../assets/chrome/appbg.png',scaleGridTop='2',scaleGridBottom='51',scaleGridLeft='2',scaleGridRight='475')"
-	backgroundSize="100%"
-	paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10"
-	horizontalGap="20"
-	xmlns:project="com.flaircode.locres.view.project.*">
-	
-	<DropShadowFilter id="dsf" strength=".4" distance="8" quality="10" />
-	
-	<VDividedBox minWidth="250" width="250" height="100%" verticalGap="20">
-		
-		<project:LocaleView width="100%" height="100%" styleName="contentBG"
-			filters="{[dsf]}" />
-		
-		<project:SourceView width="100%" height="100%" styleName="contentBG"
-			filters="{[dsf]}" />
-		
-	</VDividedBox>
-	
-	
-	<project:ResourceListView width="100%" height="100%" styleName="contentBG"
-		filters="{[dsf]}" />
-	
-</HDividedBox>
+<mx:HDividedBox width="100%" height="100%"
+				xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark" xmlns:mx="library://ns.adobe.com/flex/halo"
+				paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10" horizontalGap="20"
+				xmlns:project="com.flaircode.locres.view.project.*">
+
+	<fx:Declarations>
+		<mx:DropShadowFilter id="dsf"
+							 strength=".4" distance="8" quality="10" />
+	</fx:Declarations>
+
+	<mx:VDividedBox width="250" height="100%"
+					minWidth="250" verticalGap="20">
+
+		<project:LocaleView width="100%" height="100%"
+							styleName="contentBG" filters="{[dsf]}" />
+
+		<project:SourceView width="100%" height="100%"
+							styleName="contentBG" filters="{[dsf]}" />
+
+	</mx:VDividedBox>
+
+
+	<project:ResourceListView width="100%" height="100%"
+							  styleName="contentBG" filters="{[dsf]}" />
+
+</mx:HDividedBox>

@@ -1,56 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<WindowedApplication xmlns="http://www.adobe.com/2006/mxml" layout="absolute"
-	preinitialize="pi()"
-	frameRate="12"
-	showFlexChrome="false">
-
-	<Metadata>
+<s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark" showStatusBar="false" backgroundAlpha="0"
+					   frameRate="12" preinitialize="pi()" xmlns:mx="library://ns.adobe.com/flex/halo">
+	<fx:Metadata>
 		[ResourceBundle("lr")]
-	</Metadata>
-	<Style source="../style/locres.css" />
+	</fx:Metadata>
+	<fx:Style source="../style/locres.css" />
 
+	<fx:Declarations>
+		<s:TraceTarget includeCategory="true" includeLevel="true" includeTime="true" />
+		<swizframework:SwizConfig xmlns:swizframework="org.swizframework.*" strict="true" mediateBubbledEvents="true"
+								  eventPackages="com.flaircode.locres.event" viewPackages="com.flaircode.locres.view" beanLoaders="{[Beans]}" />
+	</fx:Declarations>
 
-	<swizframework:SwizConfig xmlns:swizframework="org.swizframework.*"
-		strict="true"
-		mediateBubbledEvents="true"
-		eventPackages="com.flaircode.locres.event"
-		viewPackages="com.flaircode.locres.view"
-		beanLoaders="{[Beans]}"
-	/>		
-
-	<Script>
+	<fx:Script>
 		<![CDATA[
 			import mx.logging.LogEventLevel;
 			import com.gskinner.utils.FramerateThrottler;
-			import com.flaircode.locres.Beans;
 			import com.soenkerohde.logging.SOSLoggingTarget;
 			import mx.logging.ILogger;
 			import mx.logging.Log;
 			import org.swizframework.Swiz;
 			
-			private static const logger:ILogger = Log.getLogger("Main");
+			private static const logger:ILogger = Log.getLogger( "Main" );
 			
-			private function pi():void
-			{
+			private function pi() : void {
 				FramerateThrottler.initialize();
 				focusManager.showFocusIndicator = false;
 				
-				if(CONFIG::logger)
-				{
+				if ( CONFIG::logger ) {
 					var sos:SOSLoggingTarget = new SOSLoggingTarget();
 					sos.fieldSeparator = "->";
 					sos.includeCategory = true;
 					sos.includeLevel = true;
 					sos.includeTime = true;
-					Log.addTarget(sos);
-					logger.info("enabled logging");
+					Log.addTarget( sos );
+					logger.info( "enabled logging" );
 				}
-				//Swiz.setLogLevel(LogEventLevel.WARN).setStrict(true, "com.flaircode.locres.event").addViewPackage("com.flaircode.locres.view").loadBeans([Beans]);
 			}
-			
 		]]>
-	</Script>
+	</fx:Script>
 
 	<view:AppView xmlns:view="com.flaircode.locres.view.*" />
-	
-</WindowedApplication>
+
+</s:WindowedApplication>
