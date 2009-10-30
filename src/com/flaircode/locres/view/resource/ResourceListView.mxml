@@ -40,9 +40,9 @@
 		<mx:Button width="22" height="20"
 				   styleName="saveButton" toolTip="{resourceManager.getString('lr', '$LR/Common/Save')}"
 				   enabled="{localeModel.selectedLocaleDir != null &amp;&amp; localeModel.selectedLocaleDir.dirty}" click="model.save()" />
-		<mx:Button width="20" height="20"
-				   styleName="cancelButton" toolTip="{resourceManager.getString('lr', '$LR/Common/Cancel')}"
-				   enabled="{localeModel.selectedLocaleDir != null &amp;&amp; localeModel.selectedLocaleDir.dirty}" click="model.cancel()" />
+		<!--<mx:Button width="20" height="20"
+			 styleName="cancelButton" toolTip="{resourceManager.getString('lr', '$LR/Common/Cancel')}"
+			 enabled="{localeModel.selectedLocaleDir != null &amp;&amp; localeModel.selectedLocaleDir.dirty}" click="model.cancel()" />-->
 		<s:Button label="{resourceManager.getString('lr', '$LR/Common/Preview')}" enabled="{localeModel.selectedLocaleDir != null}"
 				  click="model.preview()" />
 
