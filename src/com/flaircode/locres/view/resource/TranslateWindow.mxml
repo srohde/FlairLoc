@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Window width="640" height="480"
-		  skinClass="com.flaircode.locres.view.skin.WindowSkin"
-		  xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark" xmlns:mx="library://ns.adobe.com/flex/halo"
-		  showStatusBar="false" resizable="false" title="{resourceManager.getString('lr', '$LR/AutoTranslate')}" creationComplete="cc()"
-		  close="closeHandler()">
+		  skinClass="com.flaircode.locres.view.skin.WindowSkin" xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/halo" showStatusBar="false" resizable="false"
+		  title="{resourceManager.getString('lr', '$LR/AutoTranslate')}" creationComplete="cc()" close="closeHandler()">
 
 	<fx:Script>
 		<![CDATA[
@@ -104,7 +103,7 @@
 					  label="{resourceManager.getString('lr', '$LR/Common/Translate')}" click="translateHandler(event)" />
 		</mx:HBox>
 
-		<mx:VBox width="100%" height="100%">
+		<s:VGroup width="100%" height="100%">
 			<s:Label text="{resourceManager.getString('lr', '$LR/Common/Translate')}" />
 			<mx:DataGrid id="resources" width="100%" height="100%"
 						 allowMultipleSelection="true" dragEnabled="true" dragMoveEnabled="true" dataProvider="{resourceList}">
@@ -121,7 +120,7 @@
 					<mx:DataGridColumn headerText="From {fromLang.selectedItem}" dataField="fromLang" />
 				</mx:columns>
 			</mx:DataGrid>
-		</mx:VBox>
+		</s:VGroup>
 	</s:VGroup>
 
 </s:Window>

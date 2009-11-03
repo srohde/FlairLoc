@@ -17,9 +17,8 @@
 		]]>
 	</fx:Script>
 
-	<mx:HBox left="5" top="5" width="100%">
-		<s:Button label="{resourceManager.getString('lr', '$LR/Preview/SaveToClipboard')}" click="saveClipboard(event)" />
-	</mx:HBox>
+	<s:Button left="5" top="5"
+			  label="{resourceManager.getString('lr', '$LR/Preview/SaveToClipboard')}" click="saveClipboard(event)" />
 
 	<mx:TextArea id="ta" width="100%" top="35" bottom="0"
 				 wordWrap="false" editable="false" text="{localeModel.selectedLocaleDir.toString()}" />

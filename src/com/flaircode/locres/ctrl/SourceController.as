@@ -65,7 +65,7 @@ package com.flaircode.locres.ctrl {
 			model.keys = getKeys( model.sourceKey );
 		}
 		
-		public function getKeys( key : String ) : ArrayCollection {
+		protected function getKeys( key : String ) : ArrayCollection {
 			var res:Array = new Array();
 			for each ( var sf : SourceFile in model.sourceFiles ) {
 				var a:Array = sf.getByKey( key )

@@ -52,7 +52,7 @@ s|Button
 	corner-radius: 0;	
 }
 
-FormItemLabel
+mx|FormItemLabel
 {
 	text-align: left;
 }
@@ -82,7 +82,7 @@ ToolTip {
 	color: #838171;	
 }
 
-Application
+s|Application
 {
 	font-family: "Arial";
 	font-size: 12;
@@ -90,7 +90,7 @@ Application
 	color: #414141;
 }
 
-Label
+s|Label
 {
 	font-weight: bold;	
 }
@@ -118,7 +118,7 @@ Label
 	disabled-skin: Embed(source='/../assets/icon/folder_up.png');
 }
 
-ComboBox
+mx|ComboBox
 {
 	
 	corner-radius: 0;

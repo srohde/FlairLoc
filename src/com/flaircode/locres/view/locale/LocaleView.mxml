@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:VBox xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark" xmlns:mx="library://ns.adobe.com/flex/halo">
+<s:SkinnableContainer skinClass="com.flaircode.locres.view.skin.ContainerSkin" xmlns:fx="http://ns.adobe.com/mxml/2009"
+					  xmlns:s="library://ns.adobe.com/flex/spark" xmlns:mx="library://ns.adobe.com/flex/halo">
 
+
+	<s:layout>
+		<s:VerticalLayout />
+	</s:layout>
 	<fx:Script>
 		<![CDATA[
 			import mx.events.ListEvent;
@@ -42,8 +47,8 @@
 				   toolTip="{resourceManager.getString('lr', '$LR/Locale/RefreshLocaleDirectory')}" />
 	</mx:Canvas>
 
-	<mx:HBox width="100%"
-			 verticalAlign="middle" horizontalGap="5" enabled="{model.enabled}">
+	<s:HGroup width="100%"
+			  verticalAlign="middle" gap="5" enabled="{model.enabled}">
 		<s:Label text="{resourceManager.getString('lr', '$LR/Locale/ResourceBundles')}" />
 		<mx:ComboBox id="resourceBundles" width="60"
 					 dataProvider="{model.resourceBundles}" selectedIndex="{model.selectedResourceBundleIndex}" />
@@ -53,10 +58,10 @@
 		<mx:Button width="20" height="20"
 				   styleName="minusButton" toolTip="{resourceManager.getString('lr', '$LR/Locale/RemoveResourceBundle')}"
 				   click="removeResourceclickHandler(event)" />
-	</mx:HBox>
+	</s:HGroup>
 
-	<mx:HBox width="100%"
-			 verticalAlign="middle" horizontalGap="5" enabled="{model.enabled}">
+	<s:HGroup width="100%"
+			  verticalAlign="middle" gap="5" enabled="{model.enabled}">
 		<s:Label text="{resourceManager.getString('lr', '$LR/Locale/Locales')}" />
 		<mx:Button id="addLocaleButton" width="20" height="20"
 				   styleName="plusButton" toolTip="{resourceManager.getString('lr', '$LR/Locale/AddLocale')}"
@@ -64,7 +69,7 @@
 		<mx:Button id="removeLocaleButton" width="20" height="20"
 				   styleName="minusButton" toolTip="{resourceManager.getString('lr', '$LR/Locale/RemoveLocale')}"
 				   enabled="{localeGrid.selectedItem != null}" click="removeLocaleHandler(event)" />
-	</mx:HBox>
+	</s:HGroup>
 
 	<mx:DataGrid id="localeGrid" width="100%" height="100%"
 				 change="localeGrid_changeHandler(event)" enabled="{model.enabled}" selectedIndex="0" rowHeight="24" dataProvider="{model.localeDirs}">
@@ -83,10 +88,10 @@
 
 	</mx:DataGrid>
 
-	<mx:Button width="100%"
-			   label="@Resource(bundle='lr', key='$LR/Locale/Button/SyncFromSource')" enabled="{model.enabled}" click="model.syncFromSource()" />
+	<s:Button width="100%"
+			  label="@Resource(bundle='lr', key='$LR/Locale/Button/SyncFromSource')" enabled="{model.enabled}" click="model.syncFromSource()" />
 
-	<mx:Button width="100%"
-			   label="{resourceManager.getString('lr', '$LR/Source/GenerateCompileArgs')}" click="model.generateCompilerArgs()" />
+	<s:Button width="100%"
+			  label="{resourceManager.getString('lr', '$LR/Source/GenerateCompileArgs')}" click="model.generateCompilerArgs()" />
 
-</mx:VBox>
+</s:SkinnableContainer>

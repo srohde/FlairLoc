@@ -1,5 +1,4 @@
 package com.flaircode.locres.domain {
-	import com.adobe.utils.ArrayUtil;
 	import com.flaircode.locres.event.DirtyEvent;
 	import com.flaircode.util.FileUtils;
 	import com.flaircode.util.LocaleUtil;
@@ -13,6 +12,8 @@ package com.flaircode.locres.domain {
 	import mx.collections.ArrayCollection;
 	import mx.collections.IViewCursor;
 	import mx.collections.ListCollectionView;
+	import mx.collections.Sort;
+	import mx.collections.SortField;
 	import mx.events.CollectionEvent;
 	import mx.events.CollectionEventKind;
 	import mx.logging.ILogger;
@@ -92,6 +93,10 @@ package com.flaircode.locres.domain {
 		}
 		
 		protected function createResources( list : ArrayCollection ) : void {
+			var sort:Sort = new Sort();
+			sort.fields = [new SortField( "name" )];
+			list.sort = sort;
+			list.refresh();
 			resources = new ListCollectionView( list );
 			resources.removeEventListener( CollectionEvent.COLLECTION_CHANGE, onCollectionChange );
 			resources.addEventListener( CollectionEvent.COLLECTION_CHANGE, onCollectionChange, false, 0, true );

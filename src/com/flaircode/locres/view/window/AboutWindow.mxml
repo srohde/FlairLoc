@@ -10,8 +10,8 @@
 	<s:VGroup top="10" left="10" right="10" bottom="10">
 
 
-		<mx:HBox width="100%"
-				 verticalAlign="bottom">
+		<s:HGroup width="100%"
+				  verticalAlign="bottom">
 			<mx:Image width="48" height="48"
 					  source="@Embed(source='/../icons/48_48.png')" />
 			<mx:Text>
@@ -20,7 +20,7 @@
 Design: Inara Rohde]]>
 				</mx:htmlText>
 			</mx:Text>
-		</mx:HBox>
+		</s:HGroup>
 
 		<mx:Text width="100%">
 			<mx:htmlText>

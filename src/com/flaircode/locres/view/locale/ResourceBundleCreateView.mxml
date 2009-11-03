@@ -1,34 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical" width="300" height="110"
-	title="Create ResourceBundle">
-	
+<mx:TitleWindow width="300" height="110"
+				xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical" title="Create ResourceBundle" xmlns:s="library://ns.adobe.com/flex/spark">
+
 	<mx:Script>
 		<![CDATA[
 			import com.flaircode.locres.event.ResourceBundleEvent;
 			import mx.managers.PopUpManager;
 			
-			private function create():void
-			{
-				if(rbName.text != "" && dispatchEvent(new ResourceBundleEvent(ResourceBundleEvent.ADD, rbName.text)))
-				{
-					PopUpManager.removePopUp(this);
+			private function create() : void {
+				if ( rbName.text != "" && dispatchEvent( new ResourceBundleEvent( ResourceBundleEvent.ADD, rbName.text ) ) ) {
+					PopUpManager.removePopUp( this );
 				}
 			}
-			
 		]]>
 	</mx:Script>
-	
-	<mx:FormItem label="{resourceManager.getString('lr', '$LR/Common/Name')}" width="100%">
+
+	<mx:FormItem width="100%"
+				 label="{resourceManager.getString('lr', '$LR/Common/Name')}">
 		<mx:TextInput id="rbName" width="100%"
-			enter="create()"
-			creationComplete="rbName.setFocus()" />
+					  enter="create()" creationComplete="rbName.setFocus()" />
 	</mx:FormItem>
-	
-	<mx:HBox width="100%" horizontalAlign="right">
+
+	<s:HGroup width="100%">
+		<mx:Spacer width="100%" />
 		<mx:Button label="{resourceManager.getString('lr', '$LR/Common/Cancel')}" click="PopUpManager.removePopUp(this)" />
-		<mx:Button label="{resourceManager.getString('lr', '$LR/Common/Create')}"
-			enabled="{rbName.text != ''}"
-			click="create()" />
-	</mx:HBox>
-	
+		<mx:Button label="{resourceManager.getString('lr', '$LR/Common/Create')}" enabled="{rbName.text != ''}" click="create()" />
+	</s:HGroup>
+
 </mx:TitleWindow>

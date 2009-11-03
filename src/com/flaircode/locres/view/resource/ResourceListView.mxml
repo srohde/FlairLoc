@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:VBox xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark" xmlns:mx="library://ns.adobe.com/flex/halo"
-		 xmlns:control="com.flaircode.locres.control.*">
+<s:SkinnableContainer skinClass="com.flaircode.locres.view.skin.ContainerSkin" xmlns:fx="http://ns.adobe.com/mxml/2009"
+					  xmlns:s="library://ns.adobe.com/flex/spark" xmlns:mx="library://ns.adobe.com/flex/halo"
+					  xmlns:control="com.flaircode.locres.control.*">
 
+	<s:layout>
+		<s:VerticalLayout />
+	</s:layout>
 	<fx:Script>
 		<![CDATA[
 			import com.flaircode.locres.model.LocaleModel;
@@ -27,16 +31,15 @@
 		]]>
 	</fx:Script>
 
-	<mx:HBox width="100%"
-			 verticalAlign="bottom">
+	<s:HGroup width="100%">
 		<s:Label text="{resourceManager.getString('lr', '$LR/Resource/Title')}" styleName="headline" />
 		<s:Label fontWeight="normal"
 				 text="{localePModel.localeDirPath + '/' + localeModel.selectedLocaleDir.locale + '/' + localeModel.selectedLocaleDir.selectedResourceBundle + '.properties'}" />
-	</mx:HBox>
+	</s:HGroup>
 
 	<mx:HRule width="100%" />
 
-	<mx:HBox width="100%">
+	<s:HGroup width="100%">
 		<mx:Button width="22" height="20"
 				   styleName="saveButton" toolTip="{resourceManager.getString('lr', '$LR/Common/Save')}"
 				   enabled="{localeModel.selectedLocaleDir != null &amp;&amp; localeModel.selectedLocaleDir.dirty}" click="model.save()" />
@@ -54,7 +57,7 @@
 		<!--
 			 <Button label="Calc Usage" enabled="{model.sourceDir != null &amp;&amp; model.selectedLocale != null}" />
 		-->
-	</mx:HBox>
+	</s:HGroup>
 
 	<mx:DataGrid id="resources" width="100%" height="100%"
 				 editable="true" variableRowHeight="true" dataProvider="{localeModel.selectedLocaleDir.resources}">
@@ -72,4 +75,4 @@
 		</mx:columns>
 	</mx:DataGrid>
 
-</mx:VBox>
+</s:SkinnableContainer>
