@@ -13,11 +13,7 @@ package com.flaircode.locres.ctrl {
 		
 		private static const logger:ILogger = Log.getLogger( "TackingController" );
 		
-		[Autowire]
-		public var tracker:FlexTracker;
-		
 		private var ga:GATracker;
-		
 		
 		public function TrackingController() {
 		
@@ -32,14 +28,12 @@ package com.flaircode.locres.ctrl {
 		[Mediate(event="TrackPageViewEvent.PAGE", properties="page")]
 		public function trackPage( page : String ) : void {
 			logger.info( "trackPageview " + page );
-			//tracker.trackPageview( page );
 			ga.trackPageview( page );
 		}
 		
 		[Mediate(event="TrackPageActionEvent.ACTION", properties="category,action,label,value")]
 		public function trackEvent( category : String, action : String, label : String, value : Number ) : void {
 			logger.info( "trackEvent " + category + ", " + action + ", " + label + ", " + value );
-			//tracker.trackEvent( category, action, label, value );
 			ga.trackEvent( category, action, label, value );
 		}
 	}
