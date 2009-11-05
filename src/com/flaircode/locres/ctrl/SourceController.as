@@ -1,9 +1,11 @@
 package com.flaircode.locres.ctrl {
 	import com.flaircode.locres.domain.SourceFile;
 	import com.flaircode.locres.domain.SourceKey;
+	import com.flaircode.locres.event.TrackPageActionEvent;
 	import com.flaircode.locres.model.SourceModel;
 	
 	import flash.events.Event;
+	import flash.events.IEventDispatcher;
 	import flash.filesystem.File;
 	import flash.utils.Dictionary;
 	
@@ -11,10 +13,12 @@ package com.flaircode.locres.ctrl {
 	import mx.logging.ILogger;
 	import mx.logging.Log;
 	
+	import org.swizframework.factory.IDispatcherBean;
 	import org.swizframework.factory.IInitializingBean;
 	import org.swizframework.storage.ISharedObjectBean;
 	
-	public class SourceController implements IInitializingBean {
+	public class SourceController implements IInitializingBean, IDispatcherBean {
+		
 		private static const logger:ILogger = Log.getLogger( "SourceController" );
 		
 		[Autowire]
@@ -23,10 +27,21 @@ package com.flaircode.locres.ctrl {
 		[Autowire]
 		public var so:ISharedObjectBean;
 		
+		private var _dispatcher:IEventDispatcher;
+		
+		public function set dispatcher( dispatcher : IEventDispatcher ) : void {
+			_dispatcher = dispatcher;
+		}
+		
 		public function SourceController() {
 		}
 		
 		[Mediate(event="SourceEvent.REFRESH")]
+		public function refresh() : void {
+			_dispatcher.dispatchEvent( new TrackPageActionEvent( TrackPageActionEvent.ACTION, "SOURCE", "refresh", "-" ) );
+			initialize();
+		}
+		
 		public function initialize() : void {
 			model.sourceKey = so.getString( "sourceKey", "$Key" );
 			
@@ -41,6 +56,8 @@ package com.flaircode.locres.ctrl {
 		
 		[Mediate(event="SourceEvent.BROWSE_DIR")]
 		public function browseDirHandler() : void {
+			_dispatcher.dispatchEvent( new TrackPageActionEvent( TrackPageActionEvent.ACTION, "SOURCE", "browse", "-" ) );
+			
 			var f:File = new File();
 			f.browseForDirectory( "Select Source Directory" );
 			f.addEventListener( Event.SELECT, dirSelectHandler );

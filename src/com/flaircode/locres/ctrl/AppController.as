@@ -1,5 +1,7 @@
 package com.flaircode.locres.ctrl {
 	import com.flaircode.locres.event.AppEvent;
+	import com.flaircode.locres.event.TrackPageActionEvent;
+	import com.flaircode.locres.event.TrackPageViewEvent;
 	import com.flaircode.locres.model.AppModel;
 	import com.flaircode.locres.model.LocaleModel;
 	import com.flaircode.locres.view.window.AboutWindow;
@@ -8,6 +10,7 @@ package com.flaircode.locres.ctrl {
 	
 	import flash.display.NativeWindow;
 	import flash.events.Event;
+	import flash.events.IEventDispatcher;
 	import flash.events.TimerEvent;
 	import flash.net.URLRequest;
 	import flash.net.navigateToURL;
@@ -19,13 +22,16 @@ package com.flaircode.locres.ctrl {
 	import mx.events.FlexEvent;
 	import mx.logging.ILogger;
 	import mx.logging.Log;
+	import mx.resources.ResourceManager;
 	
 	import org.swizframework.Swiz;
+	import org.swizframework.factory.IDispatcherBean;
+	import org.swizframework.factory.IInitializingBean;
 	import org.swizframework.storage.ISharedObjectBean;
 	
 	import spark.components.Window;
 	
-	public class AppController {
+	public class AppController implements IInitializingBean, IDispatcherBean {
 		
 		private static const logger:ILogger = Log.getLogger( "AppController" );
 		
@@ -40,11 +46,17 @@ package com.flaircode.locres.ctrl {
 		
 		protected var settingsWindow:SettingsWindow;
 		
-		public function AppController() {
-			init();
+		private var _dispatcher:IEventDispatcher;
+		
+		public function set dispatcher( dispatcher : IEventDispatcher ) : void {
+			_dispatcher = dispatcher;
 		}
 		
-		private function init() : void {
+		public function AppController() {
+		}
+		
+		public function initialize() : void {
+			ResourceManager.getInstance().localeChain = ["en_US"];
 			FlexGlobals.topLevelApplication.addEventListener( FlexEvent.CREATION_COMPLETE, onCC );
 			FlexGlobals.topLevelApplication.addEventListener( Event.CLOSING, onClosing );
 		}
@@ -52,6 +64,7 @@ package com.flaircode.locres.ctrl {
 		public function onCC( event : FlexEvent ) : void {
 			FlaircodeUtils.centerToScreen( FlexGlobals.topLevelApplication.nativeWindow );
 			Swiz.dispatchEvent( new AppEvent( AppEvent.INIT ) );
+			_dispatcher.dispatchEvent( new TrackPageViewEvent( TrackPageViewEvent.PAGE, "/" ) );
 		}
 		
 		public function onClosing( e : Event ) : void {
@@ -95,12 +108,16 @@ package com.flaircode.locres.ctrl {
 		public function maximize() : void {
 			var nw:NativeWindow = FlexGlobals.topLevelApplication.nativeWindow;
 			if ( !model.maximized ) {
+				_dispatcher.dispatchEvent( new TrackPageActionEvent( TrackPageActionEvent.ACTION, "APP", "maximize", "-" ) );
+				
 				soBean.setValue( "windowX", nw.x );
 				soBean.setValue( "windowY", nw.y );
 				soBean.setValue( "windowW", nw.width );
 				soBean.setValue( "windowH", nw.height );
 				FlexGlobals.topLevelApplication.maximize();
 			} else {
+				_dispatcher.dispatchEvent( new TrackPageActionEvent( TrackPageActionEvent.ACTION, "APP", "restore", "-" ) );
+				
 				FlexGlobals.topLevelApplication.restore();
 				nw.x = soBean.getValue( "windowX" )
 				nw.y = soBean.getValue( "windowY" );
@@ -112,6 +129,8 @@ package com.flaircode.locres.ctrl {
 		
 		[Mediate(event="AppEvent.ABOUT")]
 		public function showAbout() : void {
+			_dispatcher.dispatchEvent( new TrackPageViewEvent( TrackPageViewEvent.PAGE, "/about" ) );
+			
 			var w:spark.components.Window = new AboutWindow();
 			w.open();
 			FlaircodeUtils.centerToScreen( w );
@@ -119,6 +138,7 @@ package com.flaircode.locres.ctrl {
 		
 		[Mediate(event="AppEvent.HELP")]
 		public function showHelp() : void {
+			_dispatcher.dispatchEvent( new TrackPageViewEvent( TrackPageViewEvent.PAGE, "/help" ) );
 			navigateToURL( new URLRequest( "http://flairloc.com" ) );
 		/* var w:Window = new HelpWindow();
 		   w.open();
@@ -127,6 +147,7 @@ package com.flaircode.locres.ctrl {
 		
 		[Mediate(event="AppEvent.SHOW_SETTINGS")]
 		public function showSettings() : void {
+			_dispatcher.dispatchEvent( new TrackPageViewEvent( TrackPageViewEvent.PAGE, "/settings" ) );
 			if ( settingsWindow == null ) {
 				settingsWindow = new SettingsWindow();
 				Swiz.getInstance().registerWindow( settingsWindow );

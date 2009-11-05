@@ -9,6 +9,7 @@
 		]]>
 	</mx:Script>
 
+	<ctrl:TrackingController id="trackingController" />
 	<model:AppModel id="locResModel" />
 	<ctrl:AppController id="locResController" />
 
@@ -41,8 +42,8 @@
 
 	<ctrl:UpdateController id="updateController" />
 	<desktop:SwizUpdateBean id="swizUpdateBean"
-							xmlns:desktop="org.swizframework.desktop.*" updateUrl="{LocResConstants.UPDATE_URL}" autoCheckUpdate="true"
-							autoStartUpdate="true" />
+							onlinePollInterval="60000" xmlns:desktop="org.swizframework.desktop.*" updateUrl="{LocResConstants.UPDATE_URL}"
+							autoCheckUpdate="true" autoStartUpdate="true" />
 
 
 </swiz:BeanLoader>
