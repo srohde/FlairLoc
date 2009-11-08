@@ -1,9 +1,9 @@
 package com.flaircode.locres.model.presentation {
 	import com.flaircode.locres.event.LocaleEvent;
 	import com.flaircode.locres.event.ResourceSearchEvent;
-	import com.flaircode.locres.event.TrackPageViewEvent;
 	import com.flaircode.locres.view.resource.TranslateWindow;
 	import com.flaircode.util.FlaircodeUtils;
+	import com.soenkerohde.ga.event.TrackPageEvent;
 	
 	import flash.events.IEventDispatcher;
 	
@@ -27,7 +27,7 @@ package com.flaircode.locres.model.presentation {
 		}
 		
 		public function autoTranslate() : void {
-			_dispatcher.dispatchEvent( new TrackPageViewEvent( TrackPageViewEvent.PAGE, "/autotranslate" ) );
+			_dispatcher.dispatchEvent( new TrackPageEvent( TrackPageEvent.PAGE, "/autotranslate" ) );
 			
 			var window:TranslateWindow = new TranslateWindow();
 			Swiz.getInstance().registerWindow( window );

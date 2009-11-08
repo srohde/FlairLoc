@@ -2,8 +2,8 @@ package com.flaircode.locres.ctrl {
 	import com.flaircode.locres.domain.LocaleDir;
 	import com.flaircode.locres.domain.Resource;
 	import com.flaircode.locres.event.FooterEvent;
-	import com.flaircode.locres.event.TrackPageActionEvent;
 	import com.flaircode.locres.model.LocaleModel;
+	import com.soenkerohde.ga.event.TrackActionEvent;
 	
 	import flash.events.IEventDispatcher;
 	
@@ -41,7 +41,7 @@ package com.flaircode.locres.ctrl {
 		
 		[Mediate(event="TranslateResourceEvent.TRANSLATE", properties="resource,fromLang,toLang")]
 		public function translateResource( resource : Resource, fromLang : String, toLang : String ) : void {
-			_dispatcher.dispatchEvent( new TrackPageActionEvent( TrackPageActionEvent.ACTION, "RESOURCE", "translate", fromLang + "->" + toLang ) );
+			_dispatcher.dispatchEvent( new TrackActionEvent( TrackActionEvent.ACTION, "RESOURCE", "translate", fromLang + "->" + toLang ) );
 			
 			var fromLocaleDir:LocaleDir = localeModel.getLocaleDirByCode( fromLang );
 			var fromResource:Resource = fromLocaleDir.getResourceByKey( resource.name );
@@ -83,7 +83,7 @@ package com.flaircode.locres.ctrl {
 				toLang = toLang.replace( "_", "-" );
 			}
 			
-			_dispatcher.dispatchEvent( new TrackPageActionEvent( TrackPageActionEvent.ACTION, "RESOURCE", "translate all", fromLang + "->" + toLang ) );
+			_dispatcher.dispatchEvent( new TrackActionEvent( TrackActionEvent.ACTION, "RESOURCE", "translate all", fromLang + "->" + toLang ) );
 			
 			// FIXME fromLang zh_TW should be lang+country
 			

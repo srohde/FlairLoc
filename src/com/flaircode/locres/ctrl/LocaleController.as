@@ -1,7 +1,6 @@
 package com.flaircode.locres.ctrl {
 	import com.flaircode.locres.domain.LocaleDir;
 	import com.flaircode.locres.domain.SourceKey;
-	import com.flaircode.locres.event.TrackPageActionEvent;
 	import com.flaircode.locres.model.LocaleModel;
 	import com.flaircode.locres.model.SourceModel;
 	import com.flaircode.locres.view.resource.LocalePreviewView;
@@ -9,6 +8,7 @@ package com.flaircode.locres.ctrl {
 	import com.flaircode.util.FileUtils;
 	import com.flaircode.util.FlaircodeUtils;
 	import com.flaircode.util.LocaleUtil;
+	import com.soenkerohde.ga.event.TrackActionEvent;
 	
 	import flash.display.NativeWindowType;
 	import flash.events.Event;
@@ -53,7 +53,7 @@ package com.flaircode.locres.ctrl {
 		
 		[Mediate(event="LocaleEvent.REFRESH")]
 		public function refresh() : void {
-			_dispatcher.dispatchEvent( new TrackPageActionEvent( TrackPageActionEvent.ACTION, "LOCALE", "refresh", "-" ) );
+			_dispatcher.dispatchEvent( new TrackActionEvent( TrackActionEvent.ACTION, "LOCALE", "refresh", "-" ) );
 			initialize();
 		}
 		
@@ -74,7 +74,7 @@ package com.flaircode.locres.ctrl {
 		
 		[Mediate(event="LocaleEvent.CREATE", properties="locale")]
 		public function createLocale( localeCode : String ) : void {
-			_dispatcher.dispatchEvent( new TrackPageActionEvent( TrackPageActionEvent.ACTION, "LOCALE", "create locale", localeCode ) );
+			_dispatcher.dispatchEvent( new TrackActionEvent( TrackActionEvent.ACTION, "LOCALE", "create locale", localeCode ) );
 			var localeDir:LocaleDir = new LocaleDir();
 			localeDir.locale = localeCode;
 			localeDir.resourceBundles = new ArrayCollection();
@@ -87,7 +87,7 @@ package com.flaircode.locres.ctrl {
 		
 		[Mediate(event="LocaleEvent.REMOVE", properties="locale")]
 		public function removeLocale( locale : String ) : void {
-			_dispatcher.dispatchEvent( new TrackPageActionEvent( TrackPageActionEvent.ACTION, "LOCALE", "remove locale", locale ) );
+			_dispatcher.dispatchEvent( new TrackActionEvent( TrackActionEvent.ACTION, "LOCALE", "remove locale", locale ) );
 			var ld:LocaleDir = model.getLocaleDirByCode( locale );
 			
 			var msg:String = "Are you sure to delete {0} with all its contents?"
@@ -113,7 +113,7 @@ package com.flaircode.locres.ctrl {
 		
 		[Mediate(event="LocaleEvent.BROWSE_LOCALE_DIR")]
 		public function browseLocaleDirHandler() : void {
-			_dispatcher.dispatchEvent( new TrackPageActionEvent( TrackPageActionEvent.ACTION, "LOCALE", "browse", "-" ) );
+			_dispatcher.dispatchEvent( new TrackActionEvent( TrackActionEvent.ACTION, "LOCALE", "browse", "-" ) );
 			
 			var f:File = new File();
 			f.browseForDirectory( "Select Locale Directory" );
@@ -168,7 +168,7 @@ package com.flaircode.locres.ctrl {
 		public function saveAllHandler() : void {
 			logger.info( "saveAll" );
 			
-			_dispatcher.dispatchEvent( new TrackPageActionEvent( TrackPageActionEvent.ACTION, "LOCALE", "save all", "-" ) );
+			_dispatcher.dispatchEvent( new TrackActionEvent( TrackActionEvent.ACTION, "LOCALE", "save all", "-" ) );
 			
 			for each ( var ld : LocaleDir in model.localeDirs ) {
 				if ( ld.dirty ) {
@@ -181,7 +181,7 @@ package com.flaircode.locres.ctrl {
 		
 		[Mediate(event="LocaleEvent.SYNC_FROM_SOURCE")]
 		public function syncFromSource() : void {
-			_dispatcher.dispatchEvent( new TrackPageActionEvent( TrackPageActionEvent.ACTION, "LOCALE", "sync from source", "-" ) );
+			_dispatcher.dispatchEvent( new TrackActionEvent( TrackActionEvent.ACTION, "LOCALE", "sync from source", "-" ) );
 			
 			if ( model.localeDirs != null && model.localeDirs.length > 0 ) {
 				for each ( var ld : LocaleDir in model.localeDirs ) {
@@ -212,7 +212,7 @@ package com.flaircode.locres.ctrl {
 		
 		[Mediate(event="LocaleEvent.GENERATE_COMPILE_ARGS")]
 		public function generate() : void {
-			_dispatcher.dispatchEvent( new TrackPageActionEvent( TrackPageActionEvent.ACTION, "LOCALE", "generate compiler args", "-" ) );
+			_dispatcher.dispatchEvent( new TrackActionEvent( TrackActionEvent.ACTION, "LOCALE", "generate compiler args", "-" ) );
 			
 			var w:spark.components.Window = new CompileArgsWindow();
 			w.systemChrome = "none";
@@ -226,7 +226,7 @@ package com.flaircode.locres.ctrl {
 		[Mediate(event="LocaleEvent.PREVIEW_LOCALE")]
 		public function previewLocale() : void {
 			logger.info( "previewLocale" );
-			_dispatcher.dispatchEvent( new TrackPageActionEvent( TrackPageActionEvent.ACTION, "LOCALE", "preview locale", "-" ) );
+			_dispatcher.dispatchEvent( new TrackActionEvent( TrackActionEvent.ACTION, "LOCALE", "preview locale", "-" ) );
 			
 			var slv:LocalePreviewView = new LocalePreviewView();
 			Swiz.getInstance().registerWindow( slv );
@@ -239,7 +239,7 @@ package com.flaircode.locres.ctrl {
 		[Mediate(event="LocaleDirEvent.SAVE", properties="localeDir")]
 		public function saveLocale( localeDir : LocaleDir ) : void {
 			logger.debug( "save " + localeDir.path );
-			_dispatcher.dispatchEvent( new TrackPageActionEvent( TrackPageActionEvent.ACTION, "LOCALE", "save", "-" ) );
+			_dispatcher.dispatchEvent( new TrackActionEvent( TrackActionEvent.ACTION, "LOCALE", "save", "-" ) );
 			
 			var res:String = localeDir.toString();
 			var f:File = new File( localeDir.path + "/" + model.selectedResourceBundle + ".properties" );
@@ -263,7 +263,7 @@ package com.flaircode.locres.ctrl {
 		
 		[Mediate(event="LocaleEvent.CANCEL_LOCALE")]
 		public function cancelHandler() : void {
-			_dispatcher.dispatchEvent( new TrackPageActionEvent( TrackPageActionEvent.ACTION, "LOCALE", "cancel", "-" ) );
+			_dispatcher.dispatchEvent( new TrackActionEvent( TrackActionEvent.ACTION, "LOCALE", "cancel", "-" ) );
 			
 			var res:String = model.selectedLocaleDir.toString();
 			var filePath:String = model.localeDir.nativePath + "/"

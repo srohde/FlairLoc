@@ -9,7 +9,9 @@
 		]]>
 	</mx:Script>
 
-	<ctrl:TrackingController id="trackingController" />
+	<ga:FGATracker id="fgaTracker"
+				   account="UA-11431550-1" xmlns:ga="com.soenkerohde.ga.*" />
+
 	<model:AppModel id="locResModel" />
 	<ctrl:AppController id="locResController" />
 
@@ -42,7 +44,7 @@
 
 	<ctrl:UpdateController id="updateController" />
 	<desktop:SwizUpdateBean id="swizUpdateBean"
-							onlinePollInterval="60000" xmlns:desktop="org.swizframework.desktop.*" updateUrl="{LocResConstants.UPDATE_URL}"
+							onlinePollInterval="60000" xmlns:desktop="com.soenkerohde.desktop.*" updateUrl="{LocResConstants.UPDATE_URL}"
 							autoCheckUpdate="true" autoStartUpdate="true" />
 
 

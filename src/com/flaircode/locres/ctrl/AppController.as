@@ -1,12 +1,12 @@
 package com.flaircode.locres.ctrl {
 	import com.flaircode.locres.event.AppEvent;
-	import com.flaircode.locres.event.TrackPageActionEvent;
-	import com.flaircode.locres.event.TrackPageViewEvent;
 	import com.flaircode.locres.model.AppModel;
 	import com.flaircode.locres.model.LocaleModel;
 	import com.flaircode.locres.view.window.AboutWindow;
 	import com.flaircode.locres.view.window.SettingsWindow;
 	import com.flaircode.util.FlaircodeUtils;
+	import com.soenkerohde.ga.event.TrackActionEvent;
+	import com.soenkerohde.ga.event.TrackPageEvent;
 	
 	import flash.display.NativeWindow;
 	import flash.events.Event;
@@ -64,7 +64,7 @@ package com.flaircode.locres.ctrl {
 		public function onCC( event : FlexEvent ) : void {
 			FlaircodeUtils.centerToScreen( FlexGlobals.topLevelApplication.nativeWindow );
 			Swiz.dispatchEvent( new AppEvent( AppEvent.INIT ) );
-			_dispatcher.dispatchEvent( new TrackPageViewEvent( TrackPageViewEvent.PAGE, "/" ) );
+			_dispatcher.dispatchEvent( new TrackPageEvent( TrackPageEvent.PAGE, "/" ) );
 		}
 		
 		public function onClosing( e : Event ) : void {
@@ -108,7 +108,7 @@ package com.flaircode.locres.ctrl {
 		public function maximize() : void {
 			var nw:NativeWindow = FlexGlobals.topLevelApplication.nativeWindow;
 			if ( !model.maximized ) {
-				_dispatcher.dispatchEvent( new TrackPageActionEvent( TrackPageActionEvent.ACTION, "APP", "maximize", "-" ) );
+				_dispatcher.dispatchEvent( new TrackActionEvent( TrackActionEvent.ACTION, "APP", "maximize", "-" ) );
 				
 				soBean.setValue( "windowX", nw.x );
 				soBean.setValue( "windowY", nw.y );
@@ -116,7 +116,7 @@ package com.flaircode.locres.ctrl {
 				soBean.setValue( "windowH", nw.height );
 				FlexGlobals.topLevelApplication.maximize();
 			} else {
-				_dispatcher.dispatchEvent( new TrackPageActionEvent( TrackPageActionEvent.ACTION, "APP", "restore", "-" ) );
+				_dispatcher.dispatchEvent( new TrackActionEvent( TrackActionEvent.ACTION, "APP", "restore", "-" ) );
 				
 				FlexGlobals.topLevelApplication.restore();
 				nw.x = soBean.getValue( "windowX" )
@@ -129,7 +129,7 @@ package com.flaircode.locres.ctrl {
 		
 		[Mediate(event="AppEvent.ABOUT")]
 		public function showAbout() : void {
-			_dispatcher.dispatchEvent( new TrackPageViewEvent( TrackPageViewEvent.PAGE, "/about" ) );
+			_dispatcher.dispatchEvent( new TrackPageEvent( TrackPageEvent.PAGE, "/about" ) );
 			
 			var w:spark.components.Window = new AboutWindow();
 			w.open();
@@ -138,7 +138,7 @@ package com.flaircode.locres.ctrl {
 		
 		[Mediate(event="AppEvent.HELP")]
 		public function showHelp() : void {
-			_dispatcher.dispatchEvent( new TrackPageViewEvent( TrackPageViewEvent.PAGE, "/help" ) );
+			_dispatcher.dispatchEvent( new TrackPageEvent( TrackPageEvent.PAGE, "/help" ) );
 			navigateToURL( new URLRequest( "http://flairloc.com" ) );
 		/* var w:Window = new HelpWindow();
 		   w.open();
@@ -147,7 +147,7 @@ package com.flaircode.locres.ctrl {
 		
 		[Mediate(event="AppEvent.SHOW_SETTINGS")]
 		public function showSettings() : void {
-			_dispatcher.dispatchEvent( new TrackPageViewEvent( TrackPageViewEvent.PAGE, "/settings" ) );
+			_dispatcher.dispatchEvent( new TrackPageEvent( TrackPageEvent.PAGE, "/settings" ) );
 			if ( settingsWindow == null ) {
 				settingsWindow = new SettingsWindow();
 				Swiz.getInstance().registerWindow( settingsWindow );

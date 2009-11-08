@@ -10,10 +10,10 @@
 		<![CDATA[
 			import com.flaircode.locres.event.AppEvent;
 			import com.flaircode.locres.model.AppModel;
+			import com.soenkerohde.desktop.ISwizUpdateBean;
 			
 			import mx.core.FlexGlobals;
 			
-			import org.swizframework.desktop.ISwizUpdateBean;
 			
 			[Bindable]
 			[Autowire]

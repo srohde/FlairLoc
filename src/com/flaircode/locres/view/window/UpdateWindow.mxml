@@ -1,44 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Window width="240" height="210"
 		  skinClass="com.flaircode.locres.view.skin.WindowSkin" xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark"
-		  xmlns:mx="library://ns.adobe.com/flex/halo" title="{resourceManager.getString('lr', '$LR/Update/Title')}" alwaysInFront="true"
-		  resizable="false" showStatusBar="false">
+		  xmlns:mx="library://ns.adobe.com/flex/halo" title="Update" alwaysInFront="true" resizable="false" showStatusBar="false">
 
 	<s:layout>
-		<s:VerticalLayout paddingLeft="10" />
+		<s:BasicLayout />
 	</s:layout>
 
 	<fx:Script>
 		<![CDATA[
-			import org.swizframework.desktop.ISwizUpdateBean;
+			import flash.events.MouseEvent;
+			import com.soenkerohde.desktop.ISwizUpdateBean;
+			import com.soenkerohde.desktop.info.IUpdateInfo;
+			
+			[Bindable]
+			[Autowire(bean="swizUpdateBean", property="updateInfo")]
+			public var updateInfo:IUpdateInfo;
 			
 			[Bindable]
 			[Autowire]
 			public var swizUpdateBean:ISwizUpdateBean;
+			
+			protected function clickHandler( event : MouseEvent ) : void {
+				swizUpdateBean.executeUpdate( false )
+			}
 		]]>
 	</fx:Script>
 
-	<mx:Form verticalGap="0">
-		<mx:FormItem label="{resourceManager.getString('lr', '$LR/Update/YourVersion')}">
-			<s:Label text="{swizUpdateBean.updateInfo.localVersion}" />
-		</mx:FormItem>
-		<mx:FormItem label="{resourceManager.getString('lr', '$LR/Update/NewVersion')}">
-			<s:Label text="{swizUpdateBean.updateInfo.remoteVersion}" />
-		</mx:FormItem>
-	</mx:Form>
+	<s:VGroup horizontalCenter="0">
+		<mx:Form verticalGap="0">
+			<mx:FormItem label="Your Version:">
+				<s:Label text="{updateInfo.localVersion}" />
+			</mx:FormItem>
+			<mx:FormItem label="New Version:">
+				<s:Label text="{updateInfo.remoteVersion}" />
+			</mx:FormItem>
+		</mx:Form>
 
-	<mx:Spacer height="10" />
+		<s:Label text="Progress: {updateInfo.bytesLoaded}/{updateInfo.bytesTotal} Bytes" />
+		<mx:ProgressBar indeterminate="false" label="Remaining: {updateInfo.timeRemaining} sec with {updateInfo.kiloBytePerSecond} KB/s" mode="polled"
+						source="{updateInfo}" />
 
-	<s:Label text="Progress: {swizUpdateBean.updateInfo.bytesLoaded}/{swizUpdateBean.updateInfo.bytesTotal} Bytes" />
-	<mx:ProgressBar indeterminate="false"
-					label="Remaining: {swizUpdateBean.updateInfo.timeRemaining} sec with {swizUpdateBean.updateInfo.kiloBytePerSecond} KB/s"
-					mode="polled" source="{swizUpdateBean.updateInfo}" />
+	</s:VGroup>
 
-	<mx:Spacer height="10" />
-
-	<mx:HBox width="100%"
-			 horizontalAlign="center">
-		<mx:Button label="Update and Restart" enabled="{swizUpdateBean.updateInfo.complete}" click="swizUpdateBean.executeUpdate(false)" />
-	</mx:HBox>
+	<s:Button bottom="10"
+			  horizontalCenter="0" label="Update and Restart" enabled="{updateInfo.complete}" click="clickHandler(event)" />
 
 </s:Window>

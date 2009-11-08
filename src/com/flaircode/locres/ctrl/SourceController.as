@@ -1,8 +1,8 @@
 package com.flaircode.locres.ctrl {
 	import com.flaircode.locres.domain.SourceFile;
 	import com.flaircode.locres.domain.SourceKey;
-	import com.flaircode.locres.event.TrackPageActionEvent;
 	import com.flaircode.locres.model.SourceModel;
+	import com.soenkerohde.ga.event.TrackActionEvent;
 	
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
@@ -38,7 +38,7 @@ package com.flaircode.locres.ctrl {
 		
 		[Mediate(event="SourceEvent.REFRESH")]
 		public function refresh() : void {
-			_dispatcher.dispatchEvent( new TrackPageActionEvent( TrackPageActionEvent.ACTION, "SOURCE", "refresh", "-" ) );
+			_dispatcher.dispatchEvent( new TrackActionEvent( TrackActionEvent.ACTION, "SOURCE", "refresh", "-" ) );
 			initialize();
 		}
 		
@@ -56,7 +56,7 @@ package com.flaircode.locres.ctrl {
 		
 		[Mediate(event="SourceEvent.BROWSE_DIR")]
 		public function browseDirHandler() : void {
-			_dispatcher.dispatchEvent( new TrackPageActionEvent( TrackPageActionEvent.ACTION, "SOURCE", "browse", "-" ) );
+			_dispatcher.dispatchEvent( new TrackActionEvent( TrackActionEvent.ACTION, "SOURCE", "browse", "-" ) );
 			
 			var f:File = new File();
 			f.browseForDirectory( "Select Source Directory" );
